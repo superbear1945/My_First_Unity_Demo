@@ -1,51 +1,103 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Composites;
+using UnityEngine.InputSystem.Controls;
 
 public class Player : MonoBehaviour
 {
     InputAction _move;
+    InputAction _mouseLeft;
+    InputAction _changeWeapon;
     Rigidbody2D _rb2d;
     SpriteRenderer _sr;
     public float _walkSpeed = 10;
     Vector3 _mouseScreenPosition;
     Vector3 _mouseWorldPosition;
-    // Start is called before the first frame update
+    GameObject _weapon;
+    Animator _atr;
+    public bool _isMove;
+    WeaponParent _weaponParent;
+    
     void Start()
     {
+        //Initialize property
         _rb2d = GetComponent<Rigidbody2D>();
         _move = InputSystem.actions.FindAction("Move");
-        _sr = GetComponent<SpriteRenderer>();        
+        _mouseLeft = InputSystem.actions.FindAction("Attack");
+        _changeWeapon = InputSystem.actions.FindAction("ChangeWeapon");
+        _sr = GetComponent<SpriteRenderer>();
+        _weapon = GameObject.FindGameObjectWithTag("Weapon");
+        _atr = GetComponent<Animator>();
+        _weaponParent = GetComponentInChildren<WeaponParent>();
+
+        //Other Logic
+        _mouseLeft.started += MeleeAttack;
+        _mouseLeft.started += RangeAttack;
+        _mouseLeft.performed += StartAutoFire;
+        _mouseLeft.canceled += StopAutoFire;
+        _changeWeapon.started += OnChangeWeapon;
     }
 
-    // Update is called once per frame
+    void OnChangeWeapon(InputAction.CallbackContext context)//切换武器事件的回调函数
+    {
+        // 如果没有找到WeaponManager的引用，则直接返回，防止报错
+        if (_weaponParent == null) return;
+
+        // 获取按键的名称 (例如 "1", "2")
+        string controlName = context.control.name;
+
+        // 尝试将按键名称字符串转换为整数
+        if (int.TryParse(controlName, out int weaponIndex))
+        {
+            // 如果转换成功，调用WeaponManager中的方法，并传入转换后的整数
+            _weaponParent.ChangeWeapon(weaponIndex); 
+            _weapon = _weaponParent._currentWeapon; // 更新当前武器引用
+            Debug.Log(weaponIndex);
+        }
+        else
+        {
+            // 如果绑定的按键不是数字（例如 "E" 键），则会转换失败
+            Debug.LogWarning($"按键 '{controlName}' 无法被解析为武器索引。");
+        }
+    }
+
+
+    private void _mouseLeft_canceled(InputAction.CallbackContext obj)
+    {
+        throw new NotImplementedException();
+    }
+
     void Update()
     {
-        
-        FlipPlayer();
+        FlipPlayerAndWeapon();
     }
 
     private void FixedUpdate()
     {
         GetMousePosition();
-        Move();
+        Move(_rb2d, _walkSpeed);
     }
 
-    private void Move()
+    private void Move(Rigidbody2D rb2d, float speed)
     {
         Vector2 dirction = _move.ReadValue<Vector2>();
-        _rb2d.velocity = dirction * _walkSpeed;
+        rb2d.velocity = dirction * speed;
+        _isMove = (rb2d.velocity != Vector2.zero);
+        _atr.SetBool("isMove", _isMove);
     }
 
-    private void FlipPlayer()
+    private void OnDisable()
     {
-        float mouseX = _mouseWorldPosition.x;
-        float characterX = transform.position.x;
-        if (characterX < mouseX)//face right
-            _sr.flipX = false;
-        else                    //face left
-            _sr.flipX = true;        
+        _mouseLeft.started -= RangeAttack;
+        _mouseLeft.started -= MeleeAttack;
+        _mouseLeft.performed -= StartAutoFire;
+        _mouseLeft.canceled -= StopAutoFire;
+        _changeWeapon.performed -= OnChangeWeapon;
     }
 
     void GetMousePosition()
@@ -53,5 +105,46 @@ public class Player : MonoBehaviour
         _mouseScreenPosition = Mouse.current.position.ReadValue();
         _mouseWorldPosition = Camera.main.ScreenToWorldPoint(_mouseScreenPosition);
         _mouseWorldPosition.z += 10;
+    }
+
+    void MeleeAttack(InputAction.CallbackContext context)
+    {
+        if (_weapon == null || _weapon.GetComponent<MeleeWeapon>() == null) 
+            return;
+        MeleeWeapon weapon = _weapon.GetComponent<MeleeWeapon>();
+        weapon.MeleeAttack();
+    }
+
+    void FlipPlayerAndWeapon()
+    {
+        _sr.flipX = (_mouseWorldPosition.x < transform.position.x);
+        _weapon.GetComponent<SpriteRenderer>().flipY = _mouseWorldPosition.x < transform.position.x;
+        bool isFlipped = _mouseWorldPosition.x < transform.position.x;
+        if(_weapon.GetComponent<RangeWeapon>() != null || _weapon.GetComponent<AutoRangeWeapon>() != null)//只有远程武器需要上下翻转
+        {
+            _weapon.GetComponent<SpriteRenderer>().flipY = isFlipped; _weapon.GetComponent<Animator>().SetBool("isFlipped", isFlipped);
+        }
+        
+    }
+
+    private void RangeAttack(InputAction.CallbackContext context)
+    {
+        if (_weapon == null || _weapon.GetComponent<RangeWeapon>() == null) 
+            return;
+        _weapon.GetComponent<Animator>().SetTrigger("Fire");
+    }
+
+    private void StartAutoFire(InputAction.CallbackContext context)
+    {
+        if (_weapon == null || _weapon.GetComponent<AutoRangeWeapon>() == null) return;
+        AutoRangeWeapon weapon = _weapon.GetComponent<AutoRangeWeapon>();
+        weapon.StartAutoFire();
+    }
+
+    private void StopAutoFire(InputAction.CallbackContext context)
+    {
+        if (_weapon == null || _weapon.GetComponent<AutoRangeWeapon>() == null) return;
+        AutoRangeWeapon weapon = _weapon.GetComponent<AutoRangeWeapon>();
+        weapon.StopAutoFire();
     }
 }
