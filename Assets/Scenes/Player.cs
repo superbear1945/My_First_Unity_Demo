@@ -159,8 +159,13 @@ public class Player : MonoBehaviour
     void FlipPlayerAndWeapon()
     {
         _sr.flipX = (_mouseWorldPosition.x < transform.position.x);
-
-
+        _weapon.GetComponent<SpriteRenderer>().flipY = _mouseWorldPosition.x < transform.position.x;
+        bool isFilpped = _mouseWorldPosition.x < transform.position.x;
+        if (_weapon.GetComponent<RangeWeapon>() != null || _weapon.GetComponent<AutoRangeWeapon>() != null)
+        {
+            _weapon.GetComponent<SpriteRenderer>().flipY = isFilpped;
+            _weapon.GetComponent<Animator>().SetBool("isFlipped", isFilpped);
+        }
     }
 
     private void RangeAttack(InputAction.CallbackContext context)
