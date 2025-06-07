@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     InputAction _move;
     InputAction _mouseLeft;
     InputAction _changeWeapon;
-    Rigidbody2D _rb2d;
+    [SerializeField] Rigidbody2D _rb2d;
     SpriteRenderer _sr;
     public float _walkSpeed = 10;
     Vector3 _mouseScreenPosition;
@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     public bool _isMove;
     WeaponParent _weaponParent;
     Health _health;
+    [SerializeField] private LayerMask _solidObjectsLayer;
+    [SerializeField] private float _raycastDistance = 0.1f; // 射线检测的距离
 
     void Awake()
     {
@@ -53,8 +55,6 @@ public class Player : MonoBehaviour
         _changeWeapon.started += OnChangeWeapon;
     }
 
-
-
     void OnChangeWeapon(InputAction.CallbackContext context)//切换武器事件的回调函数
     {
         // 如果没有找到WeaponManager的引用，则直接返回，防止报错
@@ -78,12 +78,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
-    private void _mouseLeft_canceled(InputAction.CallbackContext obj)
-    {
-        throw new NotImplementedException();
-    }
-
     void Update()
     {
         FlipPlayerAndWeapon();
@@ -98,12 +92,39 @@ public class Player : MonoBehaviour
     private void Move(Rigidbody2D rb2d, float speed)
     {
         Vector2 direction = _move.ReadValue<Vector2>();
-        rb2d.velocity = direction * speed;
+        if (IsSolidEnemy(direction))
+        {
+            rb2d.velocity = direction * speed * 0.5f;
+        }
+        else
+        {
+            rb2d.velocity = direction * speed;
+        }
         _isMove = (rb2d.velocity != Vector2.zero);
         _atr.SetBool("isMove", _isMove);
     }
 
-    
+    bool IsSolidEnemy(Vector2 direction)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(
+            _rb2d.position,                   // 射线起点
+            direction,                        // 射线方向 (使用标准化的输入方向)
+            _raycastDistance,                 // 射线长度
+            _solidObjectsLayer                // 图层蒙版 (只检测指定的层)
+        );
+        if (hit.collider == null)
+        {
+            return false;
+        }
+        else if (hit.collider.CompareTag("Enemy"))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     private void OnDisable()
     {
@@ -138,7 +159,7 @@ public class Player : MonoBehaviour
     void FlipPlayerAndWeapon()
     {
         _sr.flipX = (_mouseWorldPosition.x < transform.position.x);
-        
+
 
     }
 
@@ -180,9 +201,13 @@ public class Player : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D collision)
-    {   
-        
+    {
+
     }
 
-
+    // void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawRay(transform.position, Vector2.right * _raycastDistance);
+    // }
 }
