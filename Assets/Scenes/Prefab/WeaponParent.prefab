@@ -47,8 +47,9 @@ MonoBehaviour:
   _weapons:
   - {fileID: 6162849861461660344, guid: 6658e9615146f554c872c7334bd7dde4, type: 3}
   - {fileID: 6162849861461660344, guid: 1d904f3a184c1da4abb6e40ba68f2860, type: 3}
-  - {fileID: 6162849861461660344, guid: 9a13004b9066bab4fb8f4c3ac56aed2f, type: 3}
   - {fileID: 6162849861461660344, guid: b7c93e8ad797a2748824acfbaf8cc2e7, type: 3}
   - {fileID: 6162849861461660344, guid: 3bffa20ccf2eab14ba56ef6b796e505e, type: 3}
-  - {fileID: 6162849861461660344, guid: fe3b987b08e3a674faf36f4a16d3582f, type: 3}
+  _equippedMeleeIndex: 2
+  _equippedRangeIndex: 0
+  _equippedWeapons: []
   _weaponSpawnerIndex: 3

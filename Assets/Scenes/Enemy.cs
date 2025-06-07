@@ -45,6 +45,7 @@ public class Enemy : MonoBehaviour
         _collider2D.enabled = false;
         _dieAS.Play();
         _animator.SetBool("isDead", true);
+        _spriteRenderer.sortingOrder = 9;
         StartCoroutine(DieDelay());
     }
 
