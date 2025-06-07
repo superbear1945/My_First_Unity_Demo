@@ -29,6 +29,7 @@ public class Health : MonoBehaviour
         _currentHealth -= damage;
         if (_currentHealth <= 0 && !_isDead)
         {
+            
             _isDead = true;
             OnDie?.Invoke();
             return;

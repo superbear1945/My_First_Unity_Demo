@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,8 +23,9 @@ public class Player : MonoBehaviour
     Animator _atr;
     public bool _isMove;
     WeaponParent _weaponParent;
-    
-    void Start()
+    Health _health;
+
+    void Awake()
     {
         //Initialize property
         _rb2d = GetComponent<Rigidbody2D>();
@@ -31,9 +33,17 @@ public class Player : MonoBehaviour
         _mouseLeft = InputSystem.actions.FindAction("Attack");
         _changeWeapon = InputSystem.actions.FindAction("ChangeWeapon");
         _sr = GetComponent<SpriteRenderer>();
-        _weapon = GameObject.FindGameObjectWithTag("Weapon");
         _atr = GetComponent<Animator>();
         _weaponParent = GetComponentInChildren<WeaponParent>();
+        _health = GetComponent<Health>();
+
+    }
+
+    void Start()
+    {
+        //Initialize property
+        _weapon = GameObject.FindGameObjectWithTag("Weapon");
+
 
         //Other Logic
         _mouseLeft.started += MeleeAttack;
@@ -42,6 +52,8 @@ public class Player : MonoBehaviour
         _mouseLeft.canceled += StopAutoFire;
         _changeWeapon.started += OnChangeWeapon;
     }
+
+
 
     void OnChangeWeapon(InputAction.CallbackContext context)//切换武器事件的回调函数
     {
@@ -55,7 +67,7 @@ public class Player : MonoBehaviour
         if (int.TryParse(controlName, out int weaponIndex))
         {
             // 如果转换成功，调用WeaponManager中的方法，并传入转换后的整数
-            _weaponParent.ChangeWeapon(weaponIndex); 
+            _weaponParent.ChangeWeapon(weaponIndex);
             _weapon = _weaponParent._currentWeapon; // 更新当前武器引用
             Debug.Log(weaponIndex);
         }
@@ -85,11 +97,13 @@ public class Player : MonoBehaviour
 
     private void Move(Rigidbody2D rb2d, float speed)
     {
-        Vector2 dirction = _move.ReadValue<Vector2>();
-        rb2d.velocity = dirction * speed;
+        Vector2 direction = _move.ReadValue<Vector2>();
+        rb2d.velocity = direction * speed;
         _isMove = (rb2d.velocity != Vector2.zero);
         _atr.SetBool("isMove", _isMove);
     }
+
+    
 
     private void OnDisable()
     {
@@ -98,6 +112,12 @@ public class Player : MonoBehaviour
         _mouseLeft.performed -= StartAutoFire;
         _mouseLeft.canceled -= StopAutoFire;
         _changeWeapon.performed -= OnChangeWeapon;
+    }
+
+    private void OnEnable()
+    {
+        _health.OnDie += PlayerDie;
+        _health.Onhit += PlayerHurt;
     }
 
     void GetMousePosition()
@@ -109,7 +129,7 @@ public class Player : MonoBehaviour
 
     void MeleeAttack(InputAction.CallbackContext context)
     {
-        if (_weapon == null || _weapon.GetComponent<MeleeWeapon>() == null) 
+        if (_weapon == null || _weapon.GetComponent<MeleeWeapon>() == null)
             return;
         MeleeWeapon weapon = _weapon.GetComponent<MeleeWeapon>();
         weapon.MeleeAttack();
@@ -118,18 +138,13 @@ public class Player : MonoBehaviour
     void FlipPlayerAndWeapon()
     {
         _sr.flipX = (_mouseWorldPosition.x < transform.position.x);
-        _weapon.GetComponent<SpriteRenderer>().flipY = _mouseWorldPosition.x < transform.position.x;
-        bool isFlipped = _mouseWorldPosition.x < transform.position.x;
-        if(_weapon.GetComponent<RangeWeapon>() != null || _weapon.GetComponent<AutoRangeWeapon>() != null)//只有远程武器需要上下翻转
-        {
-            _weapon.GetComponent<SpriteRenderer>().flipY = isFlipped; _weapon.GetComponent<Animator>().SetBool("isFlipped", isFlipped);
-        }
         
+
     }
 
     private void RangeAttack(InputAction.CallbackContext context)
     {
-        if (_weapon == null || _weapon.GetComponent<RangeWeapon>() == null) 
+        if (_weapon == null || _weapon.GetComponent<RangeWeapon>() == null)
             return;
         _weapon.GetComponent<Animator>().SetTrigger("Fire");
     }
@@ -147,4 +162,27 @@ public class Player : MonoBehaviour
         AutoRangeWeapon weapon = _weapon.GetComponent<AutoRangeWeapon>();
         weapon.StopAutoFire();
     }
+
+    private void PlayerHurt(GameObject resource)
+    {
+        Debug.Log("Player is hurt by: " + resource.name);
+        // 可以在这里添加受伤的动画或音效逻辑
+    }
+
+    private void PlayerDie()
+    {
+        Debug.Log("Player has died.");
+        // 可以在这里添加玩家死亡的动画或音效逻辑
+        //_atr.SetBool("isDead", true);
+        // 停止玩家的移动
+        //_rb2d.velocity = Vector2.zero;
+        // 其他死亡处理逻辑，例如重置场景或显示游戏结束界面
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {   
+        
+    }
+
+
 }

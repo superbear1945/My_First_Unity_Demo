@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
 
 
     private void Awake()
-    { 
+    {
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
         _collider2D = GetComponent<Collider2D>();
@@ -85,4 +85,6 @@ public class Enemy : MonoBehaviour
     {
         sprite.flipX = !isFacingRight;
     }
+
+    
 }
