@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackDelay: 0.3
   _attackBlock: 0
-  _damage: 2
+  _damage: 1
 --- !u!95 &2004977438422208333
 Animator:
   serializedVersion: 5

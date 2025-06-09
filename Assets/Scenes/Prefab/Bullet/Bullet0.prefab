@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _destroyTime: 3
-  _speed: 20
+  _speed: 40
   _damage: 2
 --- !u!70 &7510317277169178894
 CapsuleCollider2D:
