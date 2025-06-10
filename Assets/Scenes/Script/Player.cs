@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         _changeWeapon.started += OnChangeWeapon;
         _health.Onhit += PlayerHurt; // PlayerHurt 现在处理所有受伤逻辑，包括闪烁
         _health.OnDie += PlayerDie;
-        
+
         WeaponParent.OnWeaponSpawned += (weapon) => _weapon = weapon;//防止游戏刚开始时角色获取不到武器
     }
 
@@ -143,7 +143,7 @@ public class Player : MonoBehaviour
         _mouseLeft.performed -= StartAutoFire;
         _mouseLeft.canceled -= StopAutoFire;
         _changeWeapon.performed -= OnChangeWeapon;
-        _health.Onhit -= PlayerHurt; 
+        _health.Onhit -= PlayerHurt;
         _health.OnDie -= PlayerDie;
         WeaponParent.OnWeaponSpawned -= (weapon) => _weapon = weapon;
     }
@@ -215,7 +215,7 @@ public class Player : MonoBehaviour
         if (totalDuration <= 0) totalDuration = 0.1f; // 防止无效的总时长
 
         // segmentDuration 是指红或白状态的持续时间
-        float segmentDuration = totalDuration / (flashCount * 2); 
+        float segmentDuration = totalDuration / (flashCount * 2);
 
         for (int i = 0; i < flashCount; i++)
         {
@@ -239,7 +239,8 @@ public class Player : MonoBehaviour
         SceneManager.LoadScene("Shop");
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+
+    void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
         {
