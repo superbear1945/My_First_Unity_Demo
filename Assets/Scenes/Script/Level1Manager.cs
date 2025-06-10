@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Level1Manager : MonoBehaviour
 {
+    Health []_healths;
     [SerializeField] int _enemyCount = 5;
     [SerializeField] float _minRadius = 10f; 
     [SerializeField] float _maxRadius = 20f; 
@@ -14,10 +16,20 @@ public class Level1Manager : MonoBehaviour
 
     void Start()
     {
+        //Initialize parameters
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        _healths = new Health[enemies.Length];
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            _healths[i] = enemies[i].GetComponent<Health>();
+        }
+
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         _playerTransform = playerObject.transform;
         SpawnEnemies(); 
     }
+
+    
 
     public void SpawnEnemies()
     {
@@ -73,10 +85,10 @@ public class Level1Manager : MonoBehaviour
         }
     }
 
-    public int GetRemainingEnemyCount()
+    private void StepToLevel2()
     {
         // It's generally more robust to track spawned enemies in a list if you need to manage them later,
         // but FindGameObjectsWithTag is fine for just getting a count.
-        return GameObject.FindGameObjectsWithTag("Enemy").Length; 
+        if (GameObject.FindGameObjectWithTag("Enemy") == null) SceneManager.LoadScene("Level2");
     }
 }

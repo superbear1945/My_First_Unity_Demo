@@ -7,8 +7,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager _instance { get; private set; }
     
-    private int coinValue = 0;
-    public int _coin {
+    private int coinValue = 20;
+    [SerializeField] public int _coin {
         get { return coinValue; }
         set {
             coinValue = value;

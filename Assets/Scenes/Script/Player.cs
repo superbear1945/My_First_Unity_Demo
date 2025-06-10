@@ -23,10 +23,13 @@ public class Player : MonoBehaviour
     GameObject _weapon;
     Animator _atr;
     public bool _isMove;
+    AudioSource _hurtSound;
     WeaponParent _weaponParent;
     Health _health;
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private LayerMask _wallLayer;
+    [SerializeField] private float _hurtFlashTotalDuration = 0.5f; // 可调整的受伤闪烁总时间
+    [SerializeField] private int _hurtFlashCount = 3; // 可调整的受伤闪烁次数
 
     [SerializeField] private float _raycastDistance = 0.1f; // 射线检测的距离
 
@@ -41,6 +44,7 @@ public class Player : MonoBehaviour
         _atr = GetComponent<Animator>();
         _weaponParent = GetComponentInChildren<WeaponParent>();
         _health = GetComponent<Health>();
+        _hurtSound = GetComponent<AudioSource>();
 
     }
 
@@ -52,7 +56,7 @@ public class Player : MonoBehaviour
         _mouseLeft.performed += StartAutoFire;
         _mouseLeft.canceled += StopAutoFire;
         _changeWeapon.started += OnChangeWeapon;
-        _health.Onhit += PlayerHurt;
+        _health.Onhit += PlayerHurt; // PlayerHurt 现在处理所有受伤逻辑，包括闪烁
         _health.OnDie += PlayerDie;
         
         WeaponParent.OnWeaponSpawned += (weapon) => _weapon = weapon;//防止游戏刚开始时角色获取不到武器
@@ -139,7 +143,7 @@ public class Player : MonoBehaviour
         _mouseLeft.performed -= StartAutoFire;
         _mouseLeft.canceled -= StopAutoFire;
         _changeWeapon.performed -= OnChangeWeapon;
-        _health.Onhit -= PlayerHurt;
+        _health.Onhit -= PlayerHurt; 
         _health.OnDie -= PlayerDie;
         WeaponParent.OnWeaponSpawned -= (weapon) => _weapon = weapon;
     }
@@ -195,15 +199,33 @@ public class Player : MonoBehaviour
 
     private void PlayerHurt(GameObject resource)
     {
-        Debug.Log("Player is hurt by: " + resource.name);
-        StartCoroutine(HurtDelay());
-        // 可以在这里添加受伤的动画或音效逻辑
+        _hurtSound.Play();
+        StartCoroutine(FlashSpriteAndResetHurtState(_hurtFlashTotalDuration, _hurtFlashCount));
+        // 可以在这里添加额外的受伤动画或音效逻辑
     }
 
-    private IEnumerator HurtDelay()
+    // FlashSpriteAndResetHurtState 协程处理闪烁效果并在结束后重置 _isHurt
+    private IEnumerator FlashSpriteAndResetHurtState(float totalDuration, int flashCount)
     {
-        yield return new WaitForSeconds(0.5f);
-        _health.ResetIsHurt();
+        Color originalColor = _sr.color;
+        Color flashColorRed = Color.red;
+        Color flashColorWhite = Color.white;
+
+        if (flashCount <= 0) flashCount = 1; // 防止无效的闪烁次数
+        if (totalDuration <= 0) totalDuration = 0.1f; // 防止无效的总时长
+
+        // segmentDuration 是指红或白状态的持续时间
+        float segmentDuration = totalDuration / (flashCount * 2); 
+
+        for (int i = 0; i < flashCount; i++)
+        {
+            _sr.color = flashColorRed;
+            yield return new WaitForSeconds(segmentDuration);
+            _sr.color = flashColorWhite;
+            yield return new WaitForSeconds(segmentDuration);
+        }
+        _sr.color = originalColor; // 确保最后恢复原色
+        _health.ResetIsHurt(); // 在闪烁动画完全结束后重置 _isHurt 状态
     }
 
     private void PlayerDie()
