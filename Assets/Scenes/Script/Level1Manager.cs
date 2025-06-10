@@ -14,6 +14,11 @@ public class Level1Manager : MonoBehaviour
 
     private Transform _playerTransform;
 
+    void Awake()
+    {
+        SpawnEnemies(); 
+    }
+
     void Start()
     {
         //Initialize parameters
@@ -22,17 +27,19 @@ public class Level1Manager : MonoBehaviour
         for (int i = 0; i < enemies.Length; i++)
         {
             _healths[i] = enemies[i].GetComponent<Health>();
+            _healths[i].OnDie += StepToLevel2;
+            Debug.Log(enemies[i].name);
         }
 
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        _playerTransform = playerObject.transform;
-        SpawnEnemies(); 
+        
     }
 
     
 
     public void SpawnEnemies()
     {
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        _playerTransform = playerObject.transform;
         if (_playerTransform == null)
         {
             Debug.LogError("Player transform is not set. Cannot spawn enemies.");
@@ -87,8 +94,7 @@ public class Level1Manager : MonoBehaviour
 
     private void StepToLevel2()
     {
-        // It's generally more robust to track spawned enemies in a list if you need to manage them later,
-        // but FindGameObjectsWithTag is fine for just getting a count.
-        if (GameObject.FindGameObjectWithTag("Enemy") == null) SceneManager.LoadScene("Level2");
+        _enemyCount--;
+        if(_enemyCount <= 0) SceneManager.LoadScene("Level2");
     }
 }
