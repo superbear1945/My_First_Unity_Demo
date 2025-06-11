@@ -6,11 +6,13 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     public static UIManager _instance { get; private set; }
-    
-    private int coinValue = 20;
-    [SerializeField] public int _coin {
+
+    [SerializeField] private int coinValue = 20;
+    public int _coin
+    {
         get { return coinValue; }
-        set {
+        set
+        {
             coinValue = value;
             if (coinText != null)
             {
@@ -36,6 +38,25 @@ public class UIManager : MonoBehaviour
         if (coinText != null)
         {
             coinText.text = coinValue.ToString();
+        }
+    }
+
+    void Start()
+    {
+        Health.OnDie += AddCoin;
+    }
+
+    void OnDisable()
+    {
+        Health.OnDie -= AddCoin;
+    }
+
+    void AddCoin(Health healthInstance)
+    {
+        if (healthInstance != null && healthInstance.gameObject.CompareTag("Enemy"))
+        {
+            _coin++;
+            
         }
     }
 }

@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
         _mouseLeft.canceled += StopAutoFire;
         _changeWeapon.started += OnChangeWeapon;
         _health.Onhit += PlayerHurt; // PlayerHurt 现在处理所有受伤逻辑，包括闪烁
-        _health.OnDie += PlayerDie;
+        Health.OnDie += PlayerDie;
 
         WeaponParent.OnWeaponSpawned += (weapon) => _weapon = weapon;//防止游戏刚开始时角色获取不到武器
     }
@@ -144,7 +144,7 @@ public class Player : MonoBehaviour
         _mouseLeft.canceled -= StopAutoFire;
         _changeWeapon.performed -= OnChangeWeapon;
         _health.Onhit -= PlayerHurt;
-        _health.OnDie -= PlayerDie;
+        Health.OnDie -= PlayerDie;
         WeaponParent.OnWeaponSpawned -= (weapon) => _weapon = weapon;
     }
 
@@ -228,8 +228,9 @@ public class Player : MonoBehaviour
         _health.ResetIsHurt(); // 在闪烁动画完全结束后重置 _isHurt 状态
     }
 
-    private void PlayerDie()
+    private void PlayerDie(Health healthInstance)
     {
+        if (healthInstance != _health) return; // 仅当是自身的 Health 组件触发时才响应
         Debug.Log("Player has died.");
         // 可以在这里添加玩家死亡的动画或音效逻辑
         //_atr.SetBool("isDead", true);

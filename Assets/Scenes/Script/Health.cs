@@ -7,7 +7,7 @@ public class Health : MonoBehaviour
 {
     public int _maxHealth = 1;
     [SerializeField]public int _currentHealth { get; private set; } = 1;
-    public event Action OnDie;
+    public static event Action<Health> OnDie;
     public event Action<GameObject> Onhit;
     public bool _isDead { get; private set; }
     public bool _isHurt { get; private set; }
@@ -31,7 +31,7 @@ public class Health : MonoBehaviour
         {
             
             _isDead = true;
-            OnDie?.Invoke();
+            OnDie?.Invoke(this);
             return;
         }
         Onhit?.Invoke(resource);

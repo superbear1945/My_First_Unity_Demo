@@ -16,24 +16,34 @@ public class Level1Manager : MonoBehaviour
 
     void Awake()
     {
-        SpawnEnemies(); 
+        SpawnEnemies();
+        // Ensure subscription happens only once
+        Health.OnDie -= StepToLevel2; // Remove previous subscriptions if any (safety measure)
+        Health.OnDie += StepToLevel2;
     }
 
     void Start()
     {
         //Initialize parameters
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        _healths = new Health[enemies.Length];
+        _healths = new Health[enemies.Length]; // This array might still be useful for other direct interactions if needed
         for (int i = 0; i < enemies.Length; i++)
         {
             _healths[i] = enemies[i].GetComponent<Health>();
-            _healths[i].OnDie += StepToLevel2;
+            // Health.OnDie += StepToLevel2; // Moved to Awake to subscribe only once
             Debug.Log(enemies[i].name);
         }
-
+        // Update initial enemy count based on spawned enemies or a set value
+        // If _enemyCount is meant to be the number of enemies to defeat, 
+        // it should be initialized correctly, e.g., based on FindGameObjectsWithTag("Enemy").Length or a serialized value.
+        // For now, I assume _enemyCount is correctly initialized as a serialized field representing enemies to defeat.
         
     }
 
+    void OnDestroy() // It's good practice to unsubscribe from static events when the listener is destroyed
+    {
+        Health.OnDie -= StepToLevel2;
+    }
     
 
     public void SpawnEnemies()
@@ -92,9 +102,16 @@ public class Level1Manager : MonoBehaviour
         }
     }
 
-    private void StepToLevel2()
+    private void StepToLevel2(Health healthInstance)
     {
-        _enemyCount--;
-        if(_enemyCount <= 0) SceneManager.LoadScene("Level2");
+        // Check if the Health component that died belongs to an Enemy
+        if (healthInstance != null && healthInstance.CompareTag("Enemy"))
+        {
+            _enemyCount--;
+            if (_enemyCount <= 0)
+            {
+                SceneManager.LoadScene("Level2");
+            }
+        }
     }
 }

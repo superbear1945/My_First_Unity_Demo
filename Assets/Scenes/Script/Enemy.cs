@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
         _collider2D = GetComponent<Collider2D>();
-        _health.OnDie += Die;
+        Health.OnDie += Die;
         _health.Onhit += Hurt;
         _rb2d = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -44,8 +44,9 @@ public class Enemy : MonoBehaviour
         _animator.SetTrigger("getDamage");
     }
 
-    public void Die()
+    public void Die(Health healthInstance)
     {
+        if (healthInstance != _health) return; // 仅当是自身的 Health 组件触发时才响应
         _collider2D.enabled = false;
         _dieAS.Play();
         _animator.SetBool("isDead", true);
