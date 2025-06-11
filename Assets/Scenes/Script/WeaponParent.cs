@@ -8,7 +8,6 @@ public class WeaponParent : MonoBehaviour
     Vector3 _mouseScreenPosition;
     Vector3 _mouseWorldPosition;
     [SerializeField]GameObject[] _weapons;
-    
     public int _equippedMeleeIndex = 2;
     public int _equippedRangeIndex = 2;
     public GameObject[] _equippedWeapons;//用于存储装备的武器，0索引代表近战武器，1索引代表远程武器

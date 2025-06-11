@@ -7,11 +7,12 @@ TagManager:
   - Weapon
   - Enemy
   - Bullet
+  - Shop
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Shop
   - Water
   - UI
   - Enemy

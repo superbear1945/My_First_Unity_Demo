@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
 {
     InputAction _move;
     InputAction _mouseLeft;
+    InputAction _interact;
     InputAction _changeWeapon;
     [SerializeField] Rigidbody2D _rb2d;
     SpriteRenderer _sr;
@@ -30,15 +31,15 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask _wallLayer;
     [SerializeField] private float _hurtFlashTotalDuration = 0.5f; // 可调整的受伤闪烁总时间
     [SerializeField] private int _hurtFlashCount = 3; // 可调整的受伤闪烁次数
-
     [SerializeField] private float _raycastDistance = 0.1f; // 射线检测的距离
-
+    static public event Action<GameObject> OnShopping; // 购物事件
     void Awake()
     {
         //Initialize property
         _rb2d = GetComponent<Rigidbody2D>();
         _move = InputSystem.actions.FindAction("Move");
         _mouseLeft = InputSystem.actions.FindAction("Attack");
+        _interact = InputSystem.actions.FindAction("Interact");
         _changeWeapon = InputSystem.actions.FindAction("ChangeWeapon");
         _sr = GetComponent<SpriteRenderer>();
         _atr = GetComponent<Animator>();
@@ -55,11 +56,48 @@ public class Player : MonoBehaviour
         _mouseLeft.started += RangeAttack;
         _mouseLeft.performed += StartAutoFire;
         _mouseLeft.canceled += StopAutoFire;
+        _interact.started += Shopping;
         _changeWeapon.started += OnChangeWeapon;
         _health.Onhit += PlayerHurt; // PlayerHurt 现在处理所有受伤逻辑，包括闪烁
         Health.OnDie += PlayerDie;
 
+        Debug.Log("Player Start");
+
         WeaponParent.OnWeaponSpawned += (weapon) => _weapon = weapon;//防止游戏刚开始时角色获取不到武器
+    }
+
+    private void Shopping(InputAction.CallbackContext context)
+    {
+        float checkRadius = 1.5f; // 可根据需要调整检测半径
+        Vector2 playerPos = transform.position;
+
+        // 先用Physics2D.OverlapCircleAll检测所有碰撞体
+        Collider2D[] hits = Physics2D.OverlapCircleAll(playerPos, checkRadius);
+
+        foreach (var hit in hits)
+        {
+            if (hit == null) continue;
+            // 检查Layer
+            if (LayerMask.LayerToName(hit.gameObject.layer) == "Shop")
+            {
+                OnShopping?.Invoke(hit.gameObject);
+                return;
+            }
+            // 检查Tag
+            if (hit.CompareTag("Shop"))
+            {
+                OnShopping?.Invoke(hit.gameObject);
+                return;
+            }
+            Debug.Log(hit == null);
+        }
+        Debug.Log("附近没有商店对象，无法购物。");
+    }
+
+    void OnDrawGizmos()//绘制角色可以购买物品的范围
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 1.5f);
     }
 
     void OnChangeWeapon(InputAction.CallbackContext context)//切换武器事件的回调函数
@@ -141,6 +179,7 @@ public class Player : MonoBehaviour
         _mouseLeft.started -= MeleeAttack;
         _mouseLeft.performed -= StartAutoFire;
         _mouseLeft.canceled -= StopAutoFire;
+        _interact.started -= Shopping;
         _changeWeapon.performed -= OnChangeWeapon;
         _health.Onhit -= PlayerHurt;
         Health.OnDie -= PlayerDie;

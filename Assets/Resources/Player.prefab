@@ -230,6 +230,11 @@ MonoBehaviour:
   _hurtFlashTotalDuration: 1
   _hurtFlashCount: 3
   _raycastDistance: 0.6
+  _counters:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &4438684506621486091
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -31,7 +31,6 @@ public class Level1Manager : MonoBehaviour
         {
             _healths[i] = enemies[i].GetComponent<Health>();
             // Health.OnDie += StepToLevel2; // Moved to Awake to subscribe only once
-            Debug.Log(enemies[i].name);
         }
         // Update initial enemy count based on spawned enemies or a set value
         // If _enemyCount is meant to be the number of enemies to defeat, 
