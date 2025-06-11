@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67fa3cc753f4f2419c3f57d191b0a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 5
+  _maxHealth: 1
 --- !u!82 &-7162750781369799676
 AudioSource:
   m_ObjectHideFlags: 0
@@ -389,7 +389,7 @@ MonoBehaviour:
   - {fileID: 6162849861461660344, guid: b7c93e8ad797a2748824acfbaf8cc2e7, type: 3}
   - {fileID: 6162849861461660344, guid: 3bffa20ccf2eab14ba56ef6b796e505e, type: 3}
   _equippedMeleeIndex: 2
-  _equippedRangeIndex: 0
+  _equippedRangeIndex: 2
   _equippedWeapons:
   - {fileID: 0}
   - {fileID: 0}

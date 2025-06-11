@@ -50,6 +50,6 @@ MonoBehaviour:
   - {fileID: 6162849861461660344, guid: b7c93e8ad797a2748824acfbaf8cc2e7, type: 3}
   - {fileID: 6162849861461660344, guid: 3bffa20ccf2eab14ba56ef6b796e505e, type: 3}
   _equippedMeleeIndex: 2
-  _equippedRangeIndex: 0
+  _equippedRangeIndex: 2
   _equippedWeapons: []
-  _weaponSpawnerIndex: 3
+  _weaponSpawnerIndex: 0

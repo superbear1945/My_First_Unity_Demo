@@ -9,8 +9,8 @@ public class WeaponParent : MonoBehaviour
     Vector3 _mouseWorldPosition;
     [SerializeField]GameObject[] _weapons;
     
-    public int _equippedMeleeIndex = 3;
-    public int _equippedRangeIndex = 1;
+    public int _equippedMeleeIndex = 2;
+    public int _equippedRangeIndex = 2;
     public GameObject[] _equippedWeapons;//用于存储装备的武器，0索引代表近战武器，1索引代表远程武器
     
     public int _weaponSpawnerIndex = 0;
@@ -29,7 +29,8 @@ public class WeaponParent : MonoBehaviour
     {
         _weaponSpawnerIndex = index - 1;
         if (_weaponSpawnerIndex < 0 || _weaponSpawnerIndex >= _equippedWeapons.Length 
-            || _equippedWeapons[_weaponSpawnerIndex] == null) return;
+            || _equippedWeapons[_weaponSpawnerIndex] == null) return;//未装备武器则不切换
+
         Transform lastWeaponTransform = _currentWeapon != null ? _currentWeapon.transform : null;
         if(_currentWeapon != null)
             Destroy(_currentWeapon.gameObject);

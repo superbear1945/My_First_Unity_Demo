@@ -76,7 +76,6 @@ public class Player : MonoBehaviour
             // 如果转换成功，调用WeaponManager中的方法，并传入转换后的整数
             _weaponParent.ChangeWeapon(weaponIndex);
             _weapon = _weaponParent._currentWeapon; // 更新当前武器引用
-            Debug.Log(weaponIndex);
         }
         else
         {
@@ -246,7 +245,6 @@ public class Player : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             _health.CauseDamage(1, collision.gameObject);
-            Debug.Log(_health._currentHealth);
         }
     }
 }
