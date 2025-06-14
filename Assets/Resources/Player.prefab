@@ -230,11 +230,6 @@ MonoBehaviour:
   _hurtFlashTotalDuration: 1
   _hurtFlashCount: 3
   _raycastDistance: 0.6
-  _counters:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &4438684506621486091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,7 +389,7 @@ MonoBehaviour:
   - {fileID: 6162849861461660344, guid: b7c93e8ad797a2748824acfbaf8cc2e7, type: 3}
   - {fileID: 6162849861461660344, guid: 3bffa20ccf2eab14ba56ef6b796e505e, type: 3}
   _equippedMeleeIndex: 2
-  _equippedRangeIndex: 2
+  _equippedRangeIndex: 1
   _equippedWeapons:
   - {fileID: 0}
   - {fileID: 0}

@@ -89,7 +89,6 @@ public class Player : MonoBehaviour
                 OnShopping?.Invoke(hit.gameObject);
                 return;
             }
-            Debug.Log(hit == null);
         }
         Debug.Log("附近没有商店对象，无法购物。");
     }
@@ -170,8 +169,6 @@ public class Player : MonoBehaviour
         );
         return hit.collider != null;//如果碰到物体则不继续前进
     }
-
-
 
     private void OnDisable()
     {

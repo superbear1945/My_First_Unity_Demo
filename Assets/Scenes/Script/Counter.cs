@@ -18,7 +18,7 @@ public class Counter : MonoBehaviour
 
     private void ShopFunc(GameObject shop)
     {
-        Debug.Log($"与商店 {shop.name} 进行购物。");
+        
         if (shop != gameObject) return;
         // 在这里添加购物逻辑
         if (UIManager._instance._coin < _price)
@@ -26,6 +26,9 @@ public class Counter : MonoBehaviour
             Debug.Log("金币不足，无法购买。");
             return;
         }
+        Debug.Log($"与商店 {shop.name} 进行购物。");
         UIManager._instance._coin -= _price;
+        if(!gameObject.CompareTag("HpShop"))
+            Destroy(gameObject);
     }
 }
