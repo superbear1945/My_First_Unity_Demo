@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3693966199402516231}
   - component: {fileID: 9132580163330352225}
   - component: {fileID: 4912565585612214052}
-  - component: {fileID: 896257012472460313}
+  - component: {fileID: 7192637470901825054}
   - component: {fileID: 3954030679698697368}
   - component: {fileID: 5807167925032225049}
   - component: {fileID: 5625630966380257323}
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 5
---- !u!114 &896257012472460313
+--- !u!114 &7192637470901825054
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8651471326221459700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6355eaa775d549942bf1d9e0edd19e1b, type: 3}
+  m_Script: {fileID: 11500000, guid: f09eb1c71d05ad74d8de1be8fc1f8dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _meleeHitAS: {fileID: 5807167925032225049}

@@ -6,17 +6,17 @@ using UnityEngine.Timeline;
 
 public class Enemy : MonoBehaviour
 {
-    Animator _animator;
-    Health _health;
-    Collider2D _collider2D;
+    protected Animator _animator;
+    protected Health _health;
+    Collider2D _collider2D; // Remains private as it's not directly used in MoveTowardsPlayer by Enemy1
     [SerializeField] AudioSource _meleeHitAS;
     [SerializeField] AudioSource _rangeHitAS;
     [SerializeField] AudioSource _dieAS;
-    GameObject _player;
-    Rigidbody2D _rb2d;
+    protected GameObject _player;
+    protected Rigidbody2D _rb2d;
     float _visionRange = 10f; //视野范围
     public float _moveSpeed = 10f; //移动速度
-    SpriteRenderer _spriteRenderer;
+    protected SpriteRenderer _spriteRenderer;
 
     void Start()
     {
@@ -65,7 +65,7 @@ public class Enemy : MonoBehaviour
         MoveTowardsPlayer(_moveSpeed, GetComponent<Health>()._isHurt, _player, _visionRange, _animator);
     }
 
-    private void MoveTowardsPlayer(float speed, bool isHurt, GameObject player, float range, Animator animator)
+    protected virtual void MoveTowardsPlayer(float speed, bool isHurt, GameObject player, float range, Animator animator)
     {
         if (_health._isDead)// 如果敌人已经死亡，则不执行移动逻辑，并且速度归零
         {
@@ -87,7 +87,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void FlipSprite(bool isFacingRight, SpriteRenderer sprite)
+    protected void FlipSprite(bool isFacingRight, SpriteRenderer sprite)
     {
         sprite.flipX = !isFacingRight;
     }
