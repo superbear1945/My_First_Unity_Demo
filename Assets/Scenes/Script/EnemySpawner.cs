@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class EnemySpawner : MonoBehaviour
 {
-    Health []_healths;
+    Health[] _healths;
     [SerializeField] int _enemyCount = 10;
-    [SerializeField] float _minRadius = 10f; 
-    [SerializeField] float _maxRadius = 15f; 
+    [SerializeField] float _minRadius = 10f;
+    [SerializeField] float _maxRadius = 15f;
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] LayerMask _wallLayer; // Layer for walls to avoid spawning behind them
 
@@ -19,6 +19,7 @@ public class EnemySpawner : MonoBehaviour
         // Ensure subscription happens only once
         // Health.OnDie -= StepToLevel3; // Remove previous subscriptions if any (safety measure)
         // Health.OnDie += StepToLevel3;
+        Health.OnDie += OnEnemyDie; // Subscribe to the static event for enemy death
     }
 
     void Start()
@@ -35,26 +36,25 @@ public class EnemySpawner : MonoBehaviour
         // If _enemyCount is meant to be the number of enemies to defeat, 
         // it should be initialized correctly, e.g., based on FindGameObjectsWithTag("Enemy").Length or a serialized value.
         // For now, I assume _enemyCount is correctly initialized as a serialized field representing enemies to defeat.
-        
+
         SpawnEnemiesAtStart();
     }
-
-    void OnDestroy() // It's good practice to unsubscribe from static events when the listener is destroyed
-    {
-        // Health.OnDie -= StepToLevel3;
-    }
-    
 
     public void SpawnEnemiesAtStart()
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         _playerTransform = playerObject.transform;
 
-        int spawnedCount = 0;
         int attempts = 0;              // To prevent infinite loops if valid positions are hard to find
         int maxAttemptsPerEnemy = 100; // Max attempts to find a spot for a single enemy
 
-        while (spawnedCount < _enemyCount && attempts < _enemyCount * maxAttemptsPerEnemy)
+        SpawnEnemies(_enemyCount, attempts, maxAttemptsPerEnemy);
+    }
+
+    void SpawnEnemies(int targetCount, int attempts = 0, int maxAttemptsPerEnemy = 100)
+    {
+        int spawnedCount = 0;
+        while (spawnedCount < targetCount && attempts < targetCount * maxAttemptsPerEnemy)
         {
             float randomAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
             float randomRadius = Random.Range(_minRadius, _maxRadius);
@@ -84,11 +84,14 @@ public class EnemySpawner : MonoBehaviour
             }
             attempts++;
         }
+    }
 
-        if (spawnedCount < _enemyCount)
-        {
-            Debug.LogWarning($"Failed to spawn all enemies. Spawned {spawnedCount} out of {_enemyCount} requested.");
-        }
+    void OnEnemyDie(Health healthInstance)
+    {
+        if (healthInstance == null) return;
+        if (!healthInstance.CompareTag("Enemy")) return;
+        _enemyCount--;
+        SpawnEnemies(1); //Spawn a new enemy when one dies
     }
 
     private void StepToLevel3(Health healthInstance)
@@ -102,5 +105,11 @@ public class EnemySpawner : MonoBehaviour
                 SceneManager.LoadScene("Level2");
             }
         }
+    }
+
+    void OnDestroy() // It's good practice to unsubscribe from static events when the listener is destroyed
+    {
+        // Health.OnDie -= StepToLevel3;
+        Health.OnDie -= OnEnemyDie; 
     }
 }

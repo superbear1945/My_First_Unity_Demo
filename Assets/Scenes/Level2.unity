@@ -1346,11 +1346,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8247927879806261341, guid: 4ae07136f426a52429406c07cf7e19bf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.78
+      value: 0.87
       objectReference: {fileID: 0}
     - target: {fileID: 8247927879806261341, guid: 4ae07136f426a52429406c07cf7e19bf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.11
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 8247927879806261341, guid: 4ae07136f426a52429406c07cf7e19bf, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6441,8 +6441,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyCount: 10
-  _minRadius: 10
-  _maxRadius: 20
+  _minRadius: 8
+  _maxRadius: 15
   _enemyPrefab: {fileID: 8651471326221459700, guid: 5da48193dc3db424b976891e14d176f5, type: 3}
   _wallLayer:
     serializedVersion: 2
