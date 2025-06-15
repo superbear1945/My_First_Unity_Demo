@@ -46,6 +46,8 @@ public class WeaponParent : MonoBehaviour
         }
         else
         {
+            Vector3 direction = (lastWeapon.position - transform.position).normalized;
+            lastWeapon.position = transform.position + direction * 0.2f; // Adjust the position of the last weapon
             _currentWeapon = Instantiate(_equippedWeapons[_weaponSpawnerIndex], lastWeapon.position, lastWeapon.rotation, transform);
         }
     }

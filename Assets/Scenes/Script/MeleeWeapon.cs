@@ -12,6 +12,7 @@ public class MeleeWeapon : MonoBehaviour
     public bool _attackBlock = false;
     public int _damage = 1;
     Collider2D _collider2D;
+    private int _attackEnemyCount = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -52,6 +53,7 @@ public class MeleeWeapon : MonoBehaviour
     void MeleeEnd()
     {
         _collider2D.enabled = false;
+        _attackEnemyCount = 0; //重置攻击计数
     }
 
     void MeleeAttackStart()
@@ -61,13 +63,15 @@ public class MeleeWeapon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //只有用武器打到敌人才能伤害，其它东西打到或者打到的不是敌人都无效，并且在一次攻击中只允许造成一次伤害
-        if(collision.CompareTag("Enemy") && gameObject.CompareTag("Weapon"))
+        //只有用武器打到敌人才能伤害，其它东西打到或者打到的不是敌人都无效，并且在一次攻击中最多只能打到三个敌人
+        if (collision.CompareTag("Enemy") && gameObject.CompareTag("Weapon") && _attackEnemyCount < 3)
         {
             Health enemy = collision.GetComponent<Health>();
-            if(enemy._isHurt == true) return; //如果敌人已经受伤，则不再造成伤害
+            if (enemy._isHurt == true) return; //如果敌人已经受伤，则不再造成伤害
             enemy.CauseDamage(_damage, gameObject);
+            _attackEnemyCount++;
         }
+        
     }
 
     float GetAnimationClipLength(Animator targetAnimator, string clipName)//获取clipNmae片段动画播放一次的时长

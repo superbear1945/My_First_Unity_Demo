@@ -275,7 +275,6 @@ public class Player : MonoBehaviour
         SceneManager.LoadScene("Shop");
     }
 
-
     void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
