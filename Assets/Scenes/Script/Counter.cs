@@ -5,7 +5,15 @@ using UnityEngine;
 public class Counter : MonoBehaviour
 {
     [SerializeField] int _price = 10;
-    [SerializeField] int _index;
+
+    public enum CounterType // 枚举定义，设为 public 以便 Inspector 访问
+    {
+        Melee1,
+        SingleGun,
+        AutoGun,
+        HP
+    }
+    [SerializeField] public CounterType _counterType; // 声明 CounterType 类型的字段并序列化
 
     void Start()
     {

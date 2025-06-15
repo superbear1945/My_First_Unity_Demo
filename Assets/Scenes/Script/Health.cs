@@ -12,10 +12,24 @@ public class Health : MonoBehaviour
     public bool _isDead { get; private set; }
     public bool _isHurt { get; private set; }
     Enemy _enemy;
+
+    void SetHealth(GameObject counter)
+    {
+        if(counter.GetComponent<Counter>()._counterType == Counter.CounterType.HP)
+            _maxHealth++;
+    }
+
     private void Start()
     {
         InitialHealth();
         _enemy = GetComponent<Enemy>();
+
+        Player.OnShopping += SetHealth; // 订阅 Player 的购物事件
+    }
+
+    void OnDisable()
+    {
+        Player.OnShopping -= SetHealth;
     }
 
     private void InitialHealth()
