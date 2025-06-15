@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] AudioSource _meleeHitAS;
     [SerializeField] AudioSource _rangeHitAS;
     [SerializeField] AudioSource _dieAS;
-    protected GameObject _player;
+    protected GameObject _playerGameObject; // Renamed for clarity
     protected Rigidbody2D _rb2d;
     float _visionRange = 10f; //视野范围
     public float _moveSpeed = 10f; //移动速度
@@ -20,7 +20,14 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
+        if (Player.Instance != null)
+        {
+            _playerGameObject = Player.Instance.gameObject;
+        }
+        else
+        {
+            Debug.LogError("Player instance not found in Enemy.");
+        }
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
         _collider2D = GetComponent<Collider2D>();
@@ -62,10 +69,10 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MoveTowardsPlayer(_moveSpeed, GetComponent<Health>()._isHurt, _player, _visionRange, _animator);
+        MoveTowardsPlayer(_moveSpeed, GetComponent<Health>()._isHurt, _playerGameObject, _visionRange, _animator);
     }
 
-    protected virtual void MoveTowardsPlayer(float speed, bool isHurt, GameObject player, float range, Animator animator)
+    protected virtual void MoveTowardsPlayer(float speed, bool isHurt, GameObject playerGameObject, float range, Animator animator)
     {
         if (_health._isDead)// 如果敌人已经死亡，则不执行移动逻辑，并且速度归零
         {
@@ -73,9 +80,9 @@ public class Enemy : MonoBehaviour
             return;
         }
         if (isHurt) return; // 如果敌人受伤，则不执行移动逻辑
-        if (player != null && Vector2.Distance(transform.position, player.transform.position) <= range)
+        if (playerGameObject != null && Vector2.Distance(transform.position, playerGameObject.transform.position) <= range)
         {
-            Vector2 direction = (player.transform.position - transform.position).normalized;
+            Vector2 direction = (playerGameObject.transform.position - transform.position).normalized;
             Vector2 targetPosition = direction * speed * Time.fixedDeltaTime + _rb2d.position;
             _rb2d.MovePosition(targetPosition);
             animator.SetBool("isMove", true);

@@ -12,6 +12,8 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance { get; private set; }
+
     InputAction _move;
     InputAction _mouseLeft;
     InputAction _interact;
@@ -32,9 +34,21 @@ public class Player : MonoBehaviour
     [SerializeField] private float _hurtFlashTotalDuration = 0.5f; // 可调整的受伤闪烁总时间
     [SerializeField] private int _hurtFlashCount = 3; // 可调整的受伤闪烁次数
     [SerializeField] private float _raycastDistance = 0.1f; // 射线检测的距离
-    static public event Action<GameObject> OnShopping; // 购物事件
+    public event Action<GameObject> OnShoppingEvent; // 购物事件 (改为实例事件)
+
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return; // 确保不会执行后续的 Awake 内容
+        }
+
         //Initialize property
         _rb2d = GetComponent<Rigidbody2D>();
         _move = InputSystem.actions.FindAction("Move");
@@ -80,13 +94,13 @@ public class Player : MonoBehaviour
             // 检查Layer
             if (LayerMask.LayerToName(hit.gameObject.layer) == "Shop")
             {
-                OnShopping?.Invoke(hit.gameObject);
+                OnShoppingEvent?.Invoke(hit.gameObject);
                 return;
             }
             // 检查Tag
             if (hit.CompareTag("Shop"))
             {
-                OnShopping?.Invoke(hit.gameObject);
+                OnShoppingEvent?.Invoke(hit.gameObject);
                 return;
             }
         }

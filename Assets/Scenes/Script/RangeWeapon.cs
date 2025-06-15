@@ -12,7 +12,7 @@ public class RangeWeapon : MonoBehaviour
     Animator _atr;
     [SerializeField] AnimationClip _flippedFireAnim;
     [SerializeField] AnimationClip _orignalFireAnim;
-    GameObject _player;
+    GameObject _playerGameObject; // Renamed for clarity
     AudioSource _fireAudio;
 
     // Start is called before the first frame update
@@ -21,7 +21,14 @@ public class RangeWeapon : MonoBehaviour
         //Initialize property
         _animator = GetComponent<Animator>();
         _atr = GetComponent<Animator>();
-        _player = GameObject.FindWithTag("Player");
+        if (Player.Instance != null)
+        {
+            _playerGameObject = Player.Instance.gameObject;
+        }
+        else
+        {
+            Debug.LogError("Player instance not found in RangeWeapon.");
+        }
         _fireAudio = GetComponent<AudioSource>();
 
         //other logic

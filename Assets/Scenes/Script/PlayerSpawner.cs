@@ -6,14 +6,27 @@ public class PlayerSpawner : MonoBehaviour
 {
     void Awake()
     {
-        GameObject playerPrefab = Resources.Load<GameObject>("Player");
-        if (playerPrefab != null)
+        if (Player.Instance == null)
         {
-            Instantiate(playerPrefab, transform.position, transform.rotation);
+            // Player instance does not exist, so spawn a new one.
+            GameObject playerPrefab = Resources.Load<GameObject>("Player");
+            if (playerPrefab != null)
+            {
+                Instantiate(playerPrefab, transform.position, transform.rotation);
+                // The new Player's Awake() method will set Player.Instance.
+            }
+            else
+            {
+                Debug.LogError("Player prefab not found in Resources folder. Cannot spawn new player.");
+            }
         }
         else
         {
-            Debug.LogError("Player prefab not found in Resources folder.");
+            // Player instance already exists, move it to the spawner's location.
+            Player.Instance.transform.position = transform.position;
+            Player.Instance.transform.rotation = transform.rotation;
+            // Optionally, ensure the player is active if it might have been deactivated.
+            // Player.Instance.gameObject.SetActive(true); 
         }
     }
 }

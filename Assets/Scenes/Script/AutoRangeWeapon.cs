@@ -13,7 +13,7 @@ public class AutoRangeWeapon : MonoBehaviour
     Animator _atr;
     [SerializeField] AnimationClip _flippedFireAnim;
     [SerializeField] AnimationClip _orignalFireAnim;
-    GameObject _player;
+    GameObject _playerGameObject; // Renamed for clarity as it holds the GameObject
     Coroutine _autoFireCoroutine;
     AudioSource _fireAudio;
 
@@ -24,7 +24,14 @@ public class AutoRangeWeapon : MonoBehaviour
         _animator = GetComponent<Animator>();
         _attackDelay = GetAnimationClipLength(_animator, "Anim_Gun1Fire");
         _atr = GetComponent<Animator>();
-        _player = GameObject.FindWithTag("Player");
+        if (Player.Instance != null)
+        {
+            _playerGameObject = Player.Instance.gameObject;
+        }
+        else
+        {
+            Debug.LogError("Player instance not found in AutoRangeWeapon.");
+        }
         _fireAudio = GetComponent<AudioSource>();
 
     }

@@ -42,8 +42,15 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemiesAtStart()
     {
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        _playerTransform = playerObject.transform;
+        if (Player.Instance != null)
+        {
+            _playerTransform = Player.Instance.transform;
+        }
+        else
+        {
+            Debug.LogError("Player instance not found in EnemySpawner. Cannot spawn enemies around player.");
+            return; // Early exit if player is not found
+        }
 
         int attempts = 0;              // To prevent infinite loops if valid positions are hard to find
         int maxAttemptsPerEnemy = 100; // Max attempts to find a spot for a single enemy

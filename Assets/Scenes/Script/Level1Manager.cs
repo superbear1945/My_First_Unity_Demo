@@ -47,9 +47,17 @@ public class Level1Manager : MonoBehaviour
 
     public void SpawnEnemies()
     {
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        _playerTransform = playerObject.transform;
-        if (_playerTransform == null)
+        if (Player.Instance != null)
+        {
+            _playerTransform = Player.Instance.transform;
+        }
+        else
+        {
+            Debug.LogError("Player instance not found in Level1Manager. Cannot spawn enemies.");
+            return; // Early exit if player is not found
+        }
+        
+        if (_playerTransform == null) // This check might be redundant now but kept for safety in case Instance exists but transform is somehow null.
         {
             Debug.LogError("Player transform is not set. Cannot spawn enemies.");
             return;

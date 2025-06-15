@@ -17,12 +17,22 @@ public class Counter : MonoBehaviour
 
     void Start()
     {
-        Player.OnShopping += ShopFunc;
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnShoppingEvent += ShopFunc;
+        }
+        else
+        {
+            Debug.LogError("Player instance not found for Counter event subscription.");
+        }
     }
 
     void OnDisable()
     {
-        Player.OnShopping -= ShopFunc;
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnShoppingEvent -= ShopFunc;
+        }
     }
 
     private void ShopFunc(GameObject shop)

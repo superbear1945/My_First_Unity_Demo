@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // Required for SceneManager
 
 public class Health : MonoBehaviour
 {
@@ -13,10 +14,13 @@ public class Health : MonoBehaviour
     public bool _isHurt { get; private set; }
     Enemy _enemy;
 
-    void SetHealth(GameObject counter)
+    void AddMaxHealth(GameObject counter)
     {
-        if(counter.GetComponent<Counter>()._counterType == Counter.CounterType.HP)
+        if (counter.GetComponent<Counter>()._counterType == Counter.CounterType.HP)
+        {
             _maxHealth++;
+            _currentHealth = _maxHealth;
+        }
     }
 
     private void Start()
@@ -24,12 +28,46 @@ public class Health : MonoBehaviour
         InitialHealth();
         _enemy = GetComponent<Enemy>();
 
-        Player.OnShopping += SetHealth; // 订阅 Player 的购物事件
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnShoppingEvent += AddMaxHealth; // 订阅 Player 的购物事件
+        }
+        else
+        {
+            Debug.LogError("Player instance not found for Health event subscription.");
+        }
+    }
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        // Note: The subscription to Player.Instance.OnShoppingEvent happens in Start, 
+        // so OnEnable/OnDisable for SceneManager events is fine here.
+        // If OnShoppingEvent subscription was also in OnEnable, we'd combine them.
     }
 
     void OnDisable()
     {
-        Player.OnShopping -= SetHealth;
+        if (Player.Instance != null)
+        {
+            Player.Instance.OnShoppingEvent -= AddMaxHealth;
+        }
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Check if this Health component belongs to the Player and the scene is "Shop"
+        if (Player.Instance != null && gameObject == Player.Instance.gameObject)
+        {
+            if (scene.name == "Shop")
+            {
+                InitialHealth(); // Resets _currentHealth to _maxHealth
+                _isDead = false;    // Ensure player is not marked as dead
+                _isHurt = false;   // Reset hurt state as well
+                Debug.Log("Player health and status reset upon entering Shop.");
+            }
+        }
     }
 
     private void InitialHealth()
