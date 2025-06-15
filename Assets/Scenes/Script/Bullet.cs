@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     [SerializeField]float _destroyTime = 5f;
     public float _speed = 20f;
     public int _damage = 1;
+    private int _hitEnemyCount = 0; // 用于记录击中敌人的次数
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +50,10 @@ public class Bullet : MonoBehaviour
         }
         Health enemy = collision.GetComponent<Health>();
         enemy.CauseDamage(_damage, gameObject);
-        Destroy(gameObject);
+        _hitEnemyCount++;
+        if (_hitEnemyCount >= 3)
+        {
+            Destroy(gameObject);
+        }
     }
 }

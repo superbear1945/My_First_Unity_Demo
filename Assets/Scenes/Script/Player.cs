@@ -282,4 +282,12 @@ public class Player : MonoBehaviour
             _health.CauseDamage(1, collision.gameObject);
         }
     }
+
+    void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log("performed");
+        }
+    }
 }

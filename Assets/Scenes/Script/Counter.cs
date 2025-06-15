@@ -5,6 +5,7 @@ using UnityEngine;
 public class Counter : MonoBehaviour
 {
     [SerializeField] int _price = 10;
+    [SerializeField] int _index;
 
     void Start()
     {

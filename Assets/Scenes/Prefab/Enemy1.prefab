@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a67fa3cc753f4f2419c3f57d191b0a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 5
+  _maxHealth: 6
 --- !u!114 &7192637470901825054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +182,7 @@ MonoBehaviour:
   _meleeHitAS: {fileID: 5807167925032225049}
   _rangeHitAS: {fileID: 4586740646512004346}
   _dieAS: {fileID: 5625630966380257323}
-  _moveSpeed: 2
+  _moveSpeed: 3
 --- !u!95 &3954030679698697368
 Animator:
   serializedVersion: 5
