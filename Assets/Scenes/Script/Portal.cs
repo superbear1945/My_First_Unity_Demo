@@ -9,7 +9,6 @@ public class Portal : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log(collision.name);
             SceneManager.LoadScene("Level1");
         }
     }

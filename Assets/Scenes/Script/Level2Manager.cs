@@ -28,7 +28,7 @@ public class Level2Manager : MonoBehaviour
         _time -= Time.deltaTime;
         if (_time <= 0)
         {
-            SceneManager.LoadScene("Shop");//Remember to change the scene name to the actual scene name
+            SceneManager.LoadScene("Level3");
         }
     }
 }

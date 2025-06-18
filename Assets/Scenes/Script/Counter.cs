@@ -14,6 +14,7 @@ public class Counter : MonoBehaviour
         HP = 2
     }
     [SerializeField] public CounterType _counterType; // 声明 CounterType 类型的字段并序列化
+    [SerializeField]static int _purchaseHPCount = 0;
 
     void Start()
     {
@@ -44,7 +45,7 @@ public class Counter : MonoBehaviour
 
     private void ShopFunc(GameObject shop)
     {
-        
+
         if (shop != gameObject) return;
         // 在这里添加购物逻辑
         if (UIManager._instance._coin < _price)
@@ -54,11 +55,20 @@ public class Counter : MonoBehaviour
         }
         Debug.Log($"与商店 {shop.name} 进行购物。");
         UIManager._instance._coin -= _price;
-        if(!gameObject.CompareTag("HpShop"))
+        if (!gameObject.CompareTag("HpShop"))
         {
             // 在销毁之前标记为已购买
             CounterStatusManager.MarkAsPurchased(_counterType);
             Destroy(gameObject);
+        }
+        else
+        {
+            _purchaseHPCount++;
+            if (_purchaseHPCount >= 9) //购买9个HP后，销毁HP商店
+            {
+                CounterStatusManager.MarkAsPurchased(_counterType);
+                Destroy(gameObject);
+            }
         }
     }
 }

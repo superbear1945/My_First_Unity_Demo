@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
             return; // 确保不会执行后续的 Awake 内容
         }
 
+
         //Initialize property
         _rb2d = GetComponent<Rigidbody2D>();
         _move = InputSystem.actions.FindAction("Move");
@@ -74,8 +75,6 @@ public class Player : MonoBehaviour
         _changeWeapon.started += OnChangeWeapon;
         _health.Onhit += PlayerHurt; // PlayerHurt 现在处理所有受伤逻辑，包括闪烁
         Health.OnDie += PlayerDie;
-
-        Debug.Log("Player Start");
 
         WeaponParent.OnWeaponSpawned += (weapon) => _weapon = weapon;//防止游戏刚开始时角色获取不到武器
     }

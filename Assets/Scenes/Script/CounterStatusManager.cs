@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//用于控制Counter购买状态
 public static class CounterStatusManager
 {
     // 使用 Counter.CounterType 作为键
@@ -16,7 +18,6 @@ public static class CounterStatusManager
         {
             purchasedCounters[counterType] = true;
         }
-        Debug.Log($"Counter type '{counterType}' marked as purchased.");
     }
 
     public static bool IsPurchased(Counter.CounterType counterType)

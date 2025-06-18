@@ -488,7 +488,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'SingleGun
 
-    15coins'
+    50 coins'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2843,7 +2843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94bd4ca15fdac0e41b1115c170c6e651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _price: 20
+  _price: 100
   _counterType: 1
 --- !u!1 &1228484989
 GameObject:
@@ -3306,7 +3306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94bd4ca15fdac0e41b1115c170c6e651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _price: 15
+  _price: 50
   _counterType: 0
 --- !u!1 &1346164067
 GameObject:
@@ -4175,7 +4175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e225779f7d632dd458cd467cc06ef593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinValue: 100
+  coinValue: 50
   coinText: {fileID: 1876444547}
 --- !u!4 &1927873059
 Transform:
@@ -4253,7 +4253,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'AutoGun
 
-    20coins'
+    100 coins'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5232,9 +5232,9 @@ SceneRoots:
   - {fileID: 684554113}
   - {fileID: 589880626}
   - {fileID: 1235704929}
+  - {fileID: 1927873059}
   - {fileID: 1668982579}
   - {fileID: 440747521}
-  - {fileID: 1927873059}
   - {fileID: 1423139622}
   - {fileID: 1326776625}
   - {fileID: 1073544953}

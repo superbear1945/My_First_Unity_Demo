@@ -27,7 +27,6 @@ public class WeaponParent : MonoBehaviour
 
     void ChangeEquippedWeapon(int index)
     {
-        Debug.Log(index);
         if (index < 2)//Ô¶³ÌÎäÆ÷
         {
             _equippedRangeIndex = index;
