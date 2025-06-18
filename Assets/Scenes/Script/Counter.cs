@@ -17,6 +17,13 @@ public class Counter : MonoBehaviour
 
     void Start()
     {
+        // 检查此展台是否已被购买
+        if (CounterStatusManager.IsPurchased(_counterType))
+        {
+            gameObject.SetActive(false); // 如果已购买，则禁用此展台
+            return; // 无需再执行后续逻辑
+        }
+
         if (Player.Instance != null)
         {
             Player.Instance.OnShoppingEvent += ShopFunc;
@@ -48,6 +55,10 @@ public class Counter : MonoBehaviour
         Debug.Log($"与商店 {shop.name} 进行购物。");
         UIManager._instance._coin -= _price;
         if(!gameObject.CompareTag("HpShop"))
+        {
+            // 在销毁之前标记为已购买
+            CounterStatusManager.MarkAsPurchased(_counterType);
             Destroy(gameObject);
+        }
     }
 }
