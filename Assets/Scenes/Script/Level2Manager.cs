@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class Level2Manager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _timeText;
-    private float _timeValue = 10f;
+    [SerializeField]private float _timeValue = 100f;
     public float _time
     {
         get { return _timeValue; }

@@ -18,6 +18,33 @@ public class WeaponParent : MonoBehaviour
 
     public static event System.Action<GameObject> OnWeaponSpawned;
 
+    void BuyNewWeapon(GameObject shop)
+    {
+        Counter.CounterType counterType = shop.GetComponent<Counter>()._counterType;
+        if (counterType == Counter.CounterType.HP) return;
+        ChangeEquippedWeapon((int)counterType);
+    }
+
+    void ChangeEquippedWeapon(int index)
+    {
+        Debug.Log(index);
+        if (index < 2)//Ô¶³ÌÎäÆ÷
+        {
+            _equippedRangeIndex = index;
+            _equippedWeapons[1] = _weapons[_equippedRangeIndex];
+        }
+        else//½üÕ½ÎäÆ÷
+        {
+            _equippedMeleeIndex = index;
+            _equippedWeapons[0] = _weapons[_equippedMeleeIndex];
+        }
+    }
+
+    void Awake()
+    {
+        Player.Instance.OnShoppingEvent += BuyNewWeapon;
+    }
+
     void Start()
     {
         _equippedWeapons = new GameObject[2] { _weapons[_equippedMeleeIndex], _weapons[_equippedRangeIndex] };
@@ -54,7 +81,7 @@ public class WeaponParent : MonoBehaviour
 
     private void OnDisable()
     {
-
+        Player.Instance.OnShoppingEvent -= BuyNewWeapon;
     }
 
     void Update()

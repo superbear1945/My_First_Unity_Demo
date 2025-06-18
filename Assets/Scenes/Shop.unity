@@ -486,7 +486,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Gun1
+  m_text: 'SingleGun
 
     15coins'
   m_isRightToLeft: 0
@@ -2557,7 +2557,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e567b17602079469fb3bf8af30f0c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coin: 20
   playerPrefab: {fileID: 2903183529726459581, guid: 36e3b435c487949478375c9b121c63f8, type: 3}
 --- !u!4 &684554113
 Transform:
@@ -2770,7 +2769,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 563336626, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2845,6 +2844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _price: 20
+  _counterType: 1
 --- !u!1 &1228484989
 GameObject:
   m_ObjectHideFlags: 0
@@ -3096,7 +3096,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 927338625, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3171,6 +3171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _price: 5
+  _counterType: 2
 --- !u!1 &1326776623
 GameObject:
   m_ObjectHideFlags: 0
@@ -3231,7 +3232,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: -205726582, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3306,6 +3307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _price: 15
+  _counterType: 0
 --- !u!1 &1346164067
 GameObject:
   m_ObjectHideFlags: 0
@@ -3468,7 +3470,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: -1786786079, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3543,6 +3545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _price: 10
+  _counterType: 3
 --- !u!1 &1440932123
 GameObject:
   m_ObjectHideFlags: 0
@@ -4172,7 +4175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e225779f7d632dd458cd467cc06ef593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinValue: 50
+  coinValue: 100
   coinText: {fileID: 1876444547}
 --- !u!4 &1927873059
 Transform:

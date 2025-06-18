@@ -197,6 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timeText: {fileID: 1268772947}
+  _timeValue: 100
 --- !u!4 &258842132
 Transform:
   m_ObjectHideFlags: 0
@@ -6722,7 +6723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030b9e154d8f7f0448a54e1b21bc8d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyCount: 20
+  _enemyCount: 40
   _minRadius: 8
   _maxRadius: 15
   _enemyPrefab: {fileID: 8651471326221459700, guid: d0c832c917d04cb4d9e2358efd04ee5e, type: 3}

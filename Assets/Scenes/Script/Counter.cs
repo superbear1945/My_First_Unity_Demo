@@ -8,10 +8,10 @@ public class Counter : MonoBehaviour
 
     public enum CounterType // 枚举定义，设为 public 以便 Inspector 访问
     {
-        Melee1,
-        SingleGun,
-        AutoGun,
-        HP
+        Melee1 = 3,
+        SingleGun = 0,
+        AutoGun = 1,
+        HP = 2
     }
     [SerializeField] public CounterType _counterType; // 声明 CounterType 类型的字段并序列化
 
