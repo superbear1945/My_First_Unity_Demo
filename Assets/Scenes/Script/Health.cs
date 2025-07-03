@@ -13,6 +13,12 @@ public class Health : MonoBehaviour
     public bool _isDead { get; private set; }
     public bool _isHurt { get; private set; }
     Enemy _enemy;
+    PopUpText _popUpTextPrefab;
+
+    void Awake()
+    {
+        _popUpTextPrefab = Resources.Load<PopUpText>("PopUpText");
+    }
 
     void AddMaxHealth(GameObject counter)
     {
@@ -30,7 +36,7 @@ public class Health : MonoBehaviour
 
         if (Player.Instance != null)
         {
-            Player.Instance.OnShoppingEvent += AddMaxHealth; // ¶©ÔÄ Player µÄ¹ºÎïÊÂ¼þ
+            Player.Instance.OnShoppingEvent += AddMaxHealth; // ï¿½ï¿½ï¿½ï¿½ Player ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
         }
         else
         {
@@ -79,9 +85,10 @@ public class Health : MonoBehaviour
     {
         if (_isHurt) return;
         _currentHealth -= damage;
+        _popUpTextPrefab.Create(damage, gameObject); //ç”¨äºŽå¼¹å‡ºä¼¤å®³æ•°å­—
         if (_currentHealth <= 0 && !_isDead)
         {
-            
+
             _isDead = true;
             OnDie?.Invoke(this);
             return;
