@@ -31,10 +31,10 @@ public class Player : MonoBehaviour
     Health _health;
     [SerializeField] private LayerMask _enemyLayer;
     [SerializeField] private LayerMask _wallLayer;
-    [SerializeField] private float _hurtFlashTotalDuration = 0.5f; // ¿Éµ÷ÕûµÄÊÜÉËÉÁË¸×ÜÊ±¼ä
-    [SerializeField] private int _hurtFlashCount = 3; // ¿Éµ÷ÕûµÄÊÜÉËÉÁË¸´ÎÊı
-    [SerializeField] private float _raycastDistance = 0.1f; // ÉäÏß¼ì²âµÄ¾àÀë
-    public event Action<GameObject> OnShoppingEvent; // ¹ºÎïÊÂ¼ş (¸ÄÎªÊµÀıÊÂ¼ş)
+    [SerializeField] private float _hurtFlashTotalDuration = 0.5f; // å¯è°ƒæ•´çš„å—ä¼¤é—ªçƒæ€»æ—¶é—´
+    [SerializeField] private int _hurtFlashCount = 3; // å¯è°ƒæ•´çš„å—ä¼¤é—ªçƒæ¬¡æ•°
+    [SerializeField] private float _raycastDistance = 0.1f; // å°„çº¿æ£€æµ‹çš„è·ç¦»
+    public event Action<GameObject> OnShoppingEvent; // è´­ç‰©äº‹ä»¶ (æ”¹ä¸ºå®ä¾‹äº‹ä»¶)
 
     void Awake()
     {
@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            return; // È·±£²»»áÖ´ĞĞºóĞøµÄ Awake ÄÚÈİ
+            return; // ç¡®ä¿ä¸ä¼šæ‰§è¡Œåç»­çš„ Awake å†…å®¹
         }
 
 
@@ -73,64 +73,64 @@ public class Player : MonoBehaviour
         _mouseLeft.canceled += StopAutoFire;
         _interact.started += Shopping;
         _changeWeapon.started += OnChangeWeapon;
-        _health.Onhit += PlayerHurt; // PlayerHurt ÏÖÔÚ´¦ÀíËùÓĞÊÜÉËÂß¼­£¬°üÀ¨ÉÁË¸
+        _health.Onhit += PlayerHurt; // PlayerHurt ç°åœ¨å¤„ç†æ‰€æœ‰å—ä¼¤é€»è¾‘ï¼ŒåŒ…æ‹¬é—ªçƒ
         Health.OnDie += PlayerDie;
 
-        WeaponParent.OnWeaponSpawned += (weapon) => _weapon = weapon;//·ÀÖ¹ÓÎÏ·¸Õ¿ªÊ¼Ê±½ÇÉ«»ñÈ¡²»µ½ÎäÆ÷
+        WeaponParent.OnWeaponSpawned += (weapon) => _weapon = weapon;//é˜²æ­¢æ¸¸æˆåˆšå¼€å§‹æ—¶è§’è‰²è·å–ä¸åˆ°æ­¦å™¨
     }
 
     private void Shopping(InputAction.CallbackContext context)
     {
-        float checkRadius = 1.5f; // ¿É¸ù¾İĞèÒªµ÷Õû¼ì²â°ë¾¶
+        float checkRadius = 1.5f; // å¯æ ¹æ®éœ€è¦è°ƒæ•´æ£€æµ‹åŠå¾„
         Vector2 playerPos = transform.position;
 
-        // ÏÈÓÃPhysics2D.OverlapCircleAll¼ì²âËùÓĞÅö×²Ìå
+        // å…ˆç”¨Physics2D.OverlapCircleAllæ£€æµ‹æ‰€æœ‰ç¢°æ’ä½“
         Collider2D[] hits = Physics2D.OverlapCircleAll(playerPos, checkRadius);
 
         foreach (var hit in hits)
         {
             if (hit == null) continue;
-            // ¼ì²éLayer
+            // æ£€æŸ¥Layer
             if (LayerMask.LayerToName(hit.gameObject.layer) == "Shop")
             {
                 OnShoppingEvent?.Invoke(hit.gameObject);
                 return;
             }
-            // ¼ì²éTag
+            // æ£€æŸ¥Tag
             if (hit.CompareTag("Shop"))
             {
                 OnShoppingEvent?.Invoke(hit.gameObject);
                 return;
             }
         }
-        Debug.Log("¸½½üÃ»ÓĞÉÌµê¶ÔÏó£¬ÎŞ·¨¹ºÎï¡£");
+        Debug.Log("é™„è¿‘æ²¡æœ‰å•†åº—å¯¹è±¡ï¼Œæ— æ³•è´­ç‰©ã€‚");
     }
 
-    void OnDrawGizmos()//»æÖÆ½ÇÉ«¿ÉÒÔ¹ºÂòÎïÆ·µÄ·¶Î§
+    void OnDrawGizmos()//ç»˜åˆ¶è§’è‰²å¯ä»¥è´­ä¹°ç‰©å“çš„èŒƒå›´
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, 1.5f);
     }
 
-    void OnChangeWeapon(InputAction.CallbackContext context)//ÇĞ»»ÎäÆ÷ÊÂ¼şµÄ»Øµ÷º¯Êı
+    void OnChangeWeapon(InputAction.CallbackContext context)//åˆ‡æ¢æ­¦å™¨äº‹ä»¶çš„å›è°ƒå‡½æ•°
     {
-        // Èç¹ûÃ»ÓĞÕÒµ½WeaponManagerµÄÒıÓÃ£¬ÔòÖ±½Ó·µ»Ø£¬·ÀÖ¹±¨´í
+        // å¦‚æœæ²¡æœ‰æ‰¾åˆ°WeaponManagerçš„å¼•ç”¨ï¼Œåˆ™ç›´æ¥è¿”å›ï¼Œé˜²æ­¢æŠ¥é”™
         if (_weaponParent == null) return;
 
-        // »ñÈ¡°´¼üµÄÃû³Æ (ÀıÈç "1", "2")
+        // è·å–æŒ‰é”®çš„åç§° (ä¾‹å¦‚ "1", "2")
         string controlName = context.control.name;
 
-        // ³¢ÊÔ½«°´¼üÃû³Æ×Ö·û´®×ª»»ÎªÕûÊı
+        // å°è¯•å°†æŒ‰é”®åç§°å­—ç¬¦ä¸²è½¬æ¢ä¸ºæ•´æ•°
         if (int.TryParse(controlName, out int weaponIndex))
         {
-            // Èç¹û×ª»»³É¹¦£¬µ÷ÓÃWeaponManagerÖĞµÄ·½·¨£¬²¢´«Èë×ª»»ºóµÄÕûÊı
+            // å¦‚æœè½¬æ¢æˆåŠŸï¼Œè°ƒç”¨WeaponManagerä¸­çš„æ–¹æ³•ï¼Œå¹¶ä¼ å…¥è½¬æ¢åçš„æ•´æ•°
             _weaponParent.ChangeWeapon(weaponIndex);
-            _weapon = _weaponParent._currentWeapon; // ¸üĞÂµ±Ç°ÎäÆ÷ÒıÓÃ
+            _weapon = _weaponParent._currentWeapon; // æ›´æ–°å½“å‰æ­¦å™¨å¼•ç”¨
         }
         else
         {
-            // Èç¹û°ó¶¨µÄ°´¼ü²»ÊÇÊı×Ö£¨ÀıÈç "E" ¼ü£©£¬Ôò»á×ª»»Ê§°Ü
-            Debug.LogWarning($"°´¼ü '{controlName}' ÎŞ·¨±»½âÎöÎªÎäÆ÷Ë÷Òı¡£");
+            // å¦‚æœç»‘å®šçš„æŒ‰é”®ä¸æ˜¯æ•°å­—ï¼ˆä¾‹å¦‚ "E" é”®ï¼‰ï¼Œåˆ™ä¼šè½¬æ¢å¤±è´¥
+            Debug.LogWarning($"æŒ‰é”® '{controlName}' æ— æ³•è¢«è§£æä¸ºæ­¦å™¨ç´¢å¼•ã€‚");
         }
     }
 
@@ -152,15 +152,15 @@ public class Player : MonoBehaviour
         {
             rb2d.velocity = direction * speed * 0.3f;
         }
-        else if (IsSolidEnemy(direction, _wallLayer))//×²µ½Ç½Í£ÏÂ
+        else if (IsSolidEnemy(direction, _wallLayer))//æ’åˆ°å¢™åœä¸‹
         {
             RaycastHit2D hit = Physics2D.Raycast(
             _rb2d.position,
             direction,
             _raycastDistance,
             _wallLayer);
-            Vector2 wallNormal = hit.normal; // »ñÈ¡Ç½±ÚµÄ·¨Ïß
-            Vector2 projectedDirection = Vector2.Perpendicular(wallNormal); // ¼ÆËãÓëÇ½±ÚÆ½ĞĞµÄ·½Ïò
+            Vector2 wallNormal = hit.normal; // è·å–å¢™å£çš„æ³•çº¿
+            Vector2 projectedDirection = Vector2.Perpendicular(wallNormal); // è®¡ç®—ä¸å¢™å£å¹³è¡Œçš„æ–¹å‘
             if (wallNormal.x == 0) rb2d.velocity = new Vector2(direction.x, 0) * speed;
             else rb2d.velocity = new Vector2(0, direction.y) * speed;
         }
@@ -175,12 +175,12 @@ public class Player : MonoBehaviour
     bool IsSolidEnemy(Vector2 direction, LayerMask layer)
     {
         RaycastHit2D hit = Physics2D.Raycast(
-            _rb2d.position,                   // ÉäÏßÆğµã
-            direction,                        // ÉäÏß·½Ïò (Ê¹ÓÃ±ê×¼»¯µÄÊäÈë·½Ïò)
-            _raycastDistance,                 // ÉäÏß³¤¶È
-            layer                             // Í¼²ãÃÉ°æ (Ö»¼ì²âÖ¸¶¨µÄ²ã)
+            _rb2d.position,                   // å°„çº¿èµ·ç‚¹
+            direction,                        // å°„çº¿æ–¹å‘ (ä½¿ç”¨æ ‡å‡†åŒ–çš„è¾“å…¥æ–¹å‘)
+            _raycastDistance,                 // å°„çº¿é•¿åº¦
+            layer                             // å›¾å±‚è’™ç‰ˆ (åªæ£€æµ‹æŒ‡å®šçš„å±‚)
         );
-        return hit.collider != null;//Èç¹ûÅöµ½ÎïÌåÔò²»¼ÌĞøÇ°½ø
+        return hit.collider != null;//å¦‚æœç¢°åˆ°ç‰©ä½“åˆ™ä¸ç»§ç»­å‰è¿›
     }
 
     private void OnDisable()
@@ -249,20 +249,20 @@ public class Player : MonoBehaviour
     {
         _hurtSound.Play();
         StartCoroutine(FlashSpriteAndResetHurtState(_hurtFlashTotalDuration, _hurtFlashCount));
-        // ¿ÉÒÔÔÚÕâÀïÌí¼Ó¶îÍâµÄÊÜÉË¶¯»­»òÒôĞ§Âß¼­
+        // å¯ä»¥åœ¨è¿™é‡Œæ·»åŠ é¢å¤–çš„å—ä¼¤åŠ¨ç”»æˆ–éŸ³æ•ˆé€»è¾‘
     }
 
-    // FlashSpriteAndResetHurtState Ğ­³Ì´¦ÀíÉÁË¸Ğ§¹û²¢ÔÚ½áÊøºóÖØÖÃ _isHurt
+    // FlashSpriteAndResetHurtState åç¨‹å¤„ç†é—ªçƒæ•ˆæœå¹¶åœ¨ç»“æŸåé‡ç½® _isHurt
     private IEnumerator FlashSpriteAndResetHurtState(float totalDuration, int flashCount)
     {
         Color originalColor = _sr.color;
         Color flashColorRed = Color.red;
         Color flashColorWhite = Color.white;
 
-        if (flashCount <= 0) flashCount = 1; // ·ÀÖ¹ÎŞĞ§µÄÉÁË¸´ÎÊı
-        if (totalDuration <= 0) totalDuration = 0.1f; // ·ÀÖ¹ÎŞĞ§µÄ×ÜÊ±³¤
+        if (flashCount <= 0) flashCount = 1; // é˜²æ­¢æ— æ•ˆçš„é—ªçƒæ¬¡æ•°
+        if (totalDuration <= 0) totalDuration = 0.1f; // é˜²æ­¢æ— æ•ˆçš„æ€»æ—¶é•¿
 
-        // segmentDuration ÊÇÖ¸ºì»ò°××´Ì¬µÄ³ÖĞøÊ±¼ä
+        // segmentDuration æ˜¯æŒ‡çº¢æˆ–ç™½çŠ¶æ€çš„æŒç»­æ—¶é—´
         float segmentDuration = totalDuration / (flashCount * 2);
 
         for (int i = 0; i < flashCount; i++)
@@ -272,19 +272,19 @@ public class Player : MonoBehaviour
             _sr.color = flashColorWhite;
             yield return new WaitForSeconds(segmentDuration);
         }
-        _sr.color = originalColor; // È·±£×îºó»Ö¸´Ô­É«
-        _health.ResetIsHurt(); // ÔÚÉÁË¸¶¯»­ÍêÈ«½áÊøºóÖØÖÃ _isHurt ×´Ì¬
+        _sr.color = originalColor; // ç¡®ä¿æœ€åæ¢å¤åŸè‰²
+        _health.ResetIsHurt(); // åœ¨é—ªçƒåŠ¨ç”»å®Œå…¨ç»“æŸåé‡ç½® _isHurt çŠ¶æ€
     }
 
     private void PlayerDie(Health healthInstance)
     {
-        if (healthInstance != _health) return; // ½öµ±ÊÇ×ÔÉíµÄ Health ×é¼ş´¥·¢Ê±²ÅÏìÓ¦
+        if (healthInstance != _health) return; // ä»…å½“æ˜¯è‡ªèº«çš„ Health ç»„ä»¶è§¦å‘æ—¶æ‰å“åº”
         Debug.Log("Player has died.");
-        // ¿ÉÒÔÔÚÕâÀïÌí¼ÓÍæ¼ÒËÀÍöµÄ¶¯»­»òÒôĞ§Âß¼­
+        // å¯ä»¥åœ¨è¿™é‡Œæ·»åŠ ç©å®¶æ­»äº¡çš„åŠ¨ç”»æˆ–éŸ³æ•ˆé€»è¾‘
         //_atr.SetBool("isDead", true);
-        // Í£Ö¹Íæ¼ÒµÄÒÆ¶¯
+        // åœæ­¢ç©å®¶çš„ç§»åŠ¨
         //_rb2d.velocity = Vector2.zero;
-        // ÆäËûËÀÍö´¦ÀíÂß¼­£¬ÀıÈçÖØÖÃ³¡¾°»òÏÔÊ¾ÓÎÏ·½áÊø½çÃæ
+        // å…¶ä»–æ­»äº¡å¤„ç†é€»è¾‘ï¼Œä¾‹å¦‚é‡ç½®åœºæ™¯æˆ–æ˜¾ç¤ºæ¸¸æˆç»“æŸç•Œé¢
         SceneManager.LoadScene("Shop");
     }
 
