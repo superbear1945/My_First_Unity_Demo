@@ -85,7 +85,8 @@ public class Health : MonoBehaviour
     {
         if (_isHurt) return;
         _currentHealth -= damage;
-        _popUpTextPrefab.Create(damage, gameObject); //用于弹出伤害数字
+        if(_currentHealth >= 1)
+            _popUpTextPrefab.Create(damage, gameObject); //用于弹出伤害数字，致死伤害不弹数字
         if (_currentHealth <= 0 && !_isDead)
         {
 

@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _timeText: {fileID: 1268772947}
-  _timeValue: 100
+  _timeValue: 60
 --- !u!4 &258842132
 Transform:
   m_ObjectHideFlags: 0
