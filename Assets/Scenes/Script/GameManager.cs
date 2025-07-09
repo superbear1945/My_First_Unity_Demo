@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager _instance { get; private set; }
@@ -37,5 +37,11 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0;
         _pauseCanvas.SetActive(true);
+    }
+
+    public void PuaseBack()
+    {
+        Time.timeScale = 1;
+        _pauseCanvas.SetActive(false);
     }
 }

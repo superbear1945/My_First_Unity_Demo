@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     InputAction _interact;
     InputAction _changeWeapon;
     public InputAction _pause;
+    bool _isPause = false; // 用于跟踪暂停状态
     
     [SerializeField] Rigidbody2D _rb2d;
     SpriteRenderer _sr;
@@ -76,15 +77,19 @@ public class Player : MonoBehaviour
         _mouseLeft.canceled += StopAutoFire;
         _interact.started += Shopping;
         _changeWeapon.started += OnChangeWeapon;
+        _pause.performed += Pause;
         _health.Onhit += PlayerHurt; // PlayerHurt 现在处理所有受伤逻辑，包括闪烁
         Health.OnDie += PlayerDie;
 
         WeaponParent.OnWeaponSpawned += (weapon) => _weapon = weapon;//防止游戏刚开始时角色获取不到武器
     }
 
-    private void Pause()
+    private void Pause(InputAction.CallbackContext context)
     {
-        
+        if (_isPause)
+            GameManager._instance.PuaseBack();
+        else
+            GameManager._instance.Pause();
     }
 
     private void Shopping(InputAction.CallbackContext context)
@@ -199,6 +204,7 @@ public class Player : MonoBehaviour
         _mouseLeft.canceled -= StopAutoFire;
         _interact.started -= Shopping;
         _changeWeapon.performed -= OnChangeWeapon;
+        _pause.performed -= Pause;
         _health.Onhit -= PlayerHurt;
         Health.OnDie -= PlayerDie;
         WeaponParent.OnWeaponSpawned -= (weapon) => _weapon = weapon;

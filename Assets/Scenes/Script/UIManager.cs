@@ -27,24 +27,24 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void ChangeHealthBar(GameObject resource) //ÊÜÉËÊ±ÑªÌõ¼õÉÙ
+    void ChangeHealthBar(GameObject resource) //å—ä¼¤æ—¶è¡€æ¡å‡å°‘
     {
         if (_playerHealth != null && _playerHealth._isDead)
         {
-            // Èç¹ûÍæ¼ÒÒÑËÀÍö£¬Ôò´Ë·½·¨²»Ó¦ÔÙ¸ù¾İÊÜÉËÇé¿öµ÷ÕûÑªÌõ
-            // ËÀÍöÊ±µÄÑªÌõ×´Ì¬ÓÉ ChangeHealthBar(Health resource) È«È¨¸ºÔğ
+            // å¦‚æœç©å®¶å·²æ­»äº¡ï¼Œåˆ™æ­¤æ–¹æ³•ä¸åº”å†æ ¹æ®å—ä¼¤æƒ…å†µè°ƒæ•´è¡€æ¡
+            // æ­»äº¡æ—¶çš„è¡€æ¡çŠ¶æ€ç”± ChangeHealthBar(Health resource) å…¨æƒè´Ÿè´£
             return;
         }
         _healthScrollbar.size = (float)_playerHealth._currentHealth / _playerHealth._maxHealth;
         Debug.Log("Hurt");
     }
 
-    void ChangeHealthBar(Health resource) //ËÀÍöÊ±ÖØÖÃÑªÌõ
+    void ChangeHealthBar(Health resource) //æ­»äº¡æ—¶é‡ç½®è¡€æ¡
     {
         if (resource != null && resource.gameObject.CompareTag("Player"))
         {
             _healthScrollbar.size = 1;
-            Debug.Log("Player Die"); //ÄÜ¹»ÊµÏÖ
+            Debug.Log("Player Die"); //èƒ½å¤Ÿå®ç°
         }
     }
 
