@@ -8,7 +8,7 @@ public class Level1Manager : MonoBehaviour
     Health []_healths;
     [SerializeField] int _enemyCount = 5;
     [SerializeField] float _minRadius = 10f; 
-    [SerializeField] float _maxRadius = 20f; 
+    [SerializeField] float _maxRadius = 15f; 
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] LayerMask _wallLayer; // Layer for walls to avoid spawning behind them
 

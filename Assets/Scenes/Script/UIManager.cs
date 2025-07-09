@@ -71,10 +71,8 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _playerHealth = Player.Instance.GetComponent<Health>();
-        _playerHealth.Onhit += ChangeHealthBar;
+        
         Health.OnDie += ChangeHealthBar;
-        ChangeHealthBar((GameObject)null);
 
         // Initialize coin text on Awake
         if (coinText != null)
@@ -86,6 +84,10 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         Health.OnDie += AddCoin;
+        _playerHealth = Player.Instance.GetComponent<Health>();
+        _playerHealth.Onhit += ChangeHealthBar;
+        ChangeHealthBar((GameObject)null);
+
     }
 
     void OnDisable()
