@@ -10,7 +10,7 @@ public class WeaponParent : MonoBehaviour
     [SerializeField]GameObject[] _weapons;
     public int _equippedMeleeIndex = 2;
     public int _equippedRangeIndex = 2;
-    public GameObject[] _equippedWeapons;//ÓÃÓÚ´æ´¢×°±¸µÄÎäÆ÷£¬0Ë÷Òý´ú±í½üÕ½ÎäÆ÷£¬1Ë÷Òý´ú±íÔ¶³ÌÎäÆ÷
+    public GameObject[] _equippedWeapons;//ï¿½ï¿½ï¿½Ú´æ´¢×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     
     public int _weaponSpawnerIndex = 0;
     public bool _isAttacking { get; private set; } = false; //uesd to control weapon no rotation while melee attacking
@@ -27,12 +27,12 @@ public class WeaponParent : MonoBehaviour
 
     void ChangeEquippedWeapon(int index)
     {
-        if (index < 2)//Ô¶³ÌÎäÆ÷
+        if (index < 2)//Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             _equippedRangeIndex = index;
             _equippedWeapons[1] = _weapons[_equippedRangeIndex];
         }
-        else//½üÕ½ÎäÆ÷
+        else//ï¿½ï¿½Õ½ï¿½ï¿½ï¿½ï¿½
         {
             _equippedMeleeIndex = index;
             _equippedWeapons[0] = _weapons[_equippedMeleeIndex];
@@ -54,7 +54,7 @@ public class WeaponParent : MonoBehaviour
     {
         _weaponSpawnerIndex = index - 1;
         if (_weaponSpawnerIndex < 0 || _weaponSpawnerIndex >= _equippedWeapons.Length 
-            || _equippedWeapons[_weaponSpawnerIndex] == null) return;//Î´×°±¸ÎäÆ÷Ôò²»ÇÐ»»
+            || _equippedWeapons[_weaponSpawnerIndex] == null) return;//Î´×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½
 
         Transform lastWeaponTransform = _currentWeapon != null ? _currentWeapon.transform : null;
         if(_currentWeapon != null)
@@ -85,6 +85,7 @@ public class WeaponParent : MonoBehaviour
 
     void Update()
     {
+        if(GameManager._instance._isPause) return; // Pause the weapon aiming if the game is paused
         GetMousePosition();
         AimToMouse();
     }

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Composites;
@@ -19,7 +18,6 @@ public class Player : MonoBehaviour
     InputAction _interact;
     InputAction _changeWeapon;
     public InputAction _pause;
-    bool _isPause = false; // 用于跟踪暂停状态
     
     [SerializeField] Rigidbody2D _rb2d;
     SpriteRenderer _sr;
@@ -86,10 +84,14 @@ public class Player : MonoBehaviour
 
     private void Pause(InputAction.CallbackContext context)
     {
-        if (_isPause)
-            GameManager._instance.PuaseBack();
+        if (GameManager._instance._isPause)
+        {
+            GameManager._instance.PauseBack();
+        }
         else
+        {
             GameManager._instance.Pause();
+        }
     }
 
     private void Shopping(InputAction.CallbackContext context)

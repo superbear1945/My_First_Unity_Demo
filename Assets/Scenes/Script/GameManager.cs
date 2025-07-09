@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerPrefab;
     public GameObject _pauseCanvas;
+    public bool _isPause { get; private set; } = false; // 用于跟踪暂停状态
 
     private void Awake()
     {
@@ -31,17 +32,21 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("Shop");
         _pauseCanvas.SetActive(false);
+        Time.timeScale = 1;
+        _isPause = false;
     }
 
     public void Pause()
     {
         Time.timeScale = 0;
         _pauseCanvas.SetActive(true);
+        _isPause = true;
     }
 
-    public void PuaseBack()
+    public void PauseBack()
     {
         Time.timeScale = 1;
         _pauseCanvas.SetActive(false);
+        _isPause = false;
     }
 }

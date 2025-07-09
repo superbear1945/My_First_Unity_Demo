@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -53,7 +52,7 @@ public class MeleeWeapon : MonoBehaviour
     void MeleeEnd()
     {
         _collider2D.enabled = false;
-        _attackEnemyCount = 0; //ÖØÖÃ¹¥»÷¼ÆÊý
+        _attackEnemyCount = 0; //ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     }
 
     void MeleeAttackStart()
@@ -63,37 +62,37 @@ public class MeleeWeapon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Ö»ÓÐÓÃÎäÆ÷´òµ½µÐÈË²ÅÄÜÉËº¦£¬ÆäËü¶«Î÷´òµ½»òÕß´òµ½µÄ²»ÊÇµÐÈË¶¼ÎÞÐ§£¬²¢ÇÒÔÚÒ»´Î¹¥»÷ÖÐ×î¶àÖ»ÄÜ´òµ½Èý¸öµÐÈË
+        //Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½òµ½µï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½òµ½»ï¿½ï¿½ß´òµ½µÄ²ï¿½ï¿½Çµï¿½ï¿½Ë¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Î¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½Ü´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (collision.CompareTag("Enemy") && gameObject.CompareTag("Weapon") && _attackEnemyCount < 3)
         {
             Health enemy = collision.GetComponent<Health>();
-            if (enemy._isHurt == true) return; //Èç¹ûµÐÈËÒÑ¾­ÊÜÉË£¬Ôò²»ÔÙÔì³ÉÉËº¦
+            if (enemy._isHurt == true) return; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½
             enemy.CauseDamage(_damage, gameObject);
             _attackEnemyCount++;
         }
         
     }
 
-    float GetAnimationClipLength(Animator targetAnimator, string clipName)//»ñÈ¡clipNmaeÆ¬¶Î¶¯»­²¥·ÅÒ»´ÎµÄÊ±³¤
+    float GetAnimationClipLength(Animator targetAnimator, string clipName)//ï¿½ï¿½È¡clipNmaeÆ¬ï¿½Î¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Îµï¿½Ê±ï¿½ï¿½
     {
         if (targetAnimator == null || string.IsNullOrEmpty(clipName))
         {
             return 0f;
         }
 
-        // »ñÈ¡ Animator Controller
+        // ï¿½ï¿½È¡ Animator Controller
         RuntimeAnimatorController rac = targetAnimator.runtimeAnimatorController;
         if (rac == null)
         {
             return 0f;
         }
 
-        // ±éÀú Animator Controller ÖÐµÄËùÓÐ¶¯»­Æ¬¶Î
+        // ï¿½ï¿½ï¿½ï¿½ Animator Controller ï¿½Ðµï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½
         foreach (AnimationClip clip in rac.animationClips)
         {
             if (clip != null && clip.name == clipName)
             {
-                return clip.length; // ·µ»Ø¶¯»­Æ¬¶ÎµÄ³¤¶È (ÒÔÃëÎªµ¥Î»)
+                return clip.length; // ï¿½ï¿½ï¿½Ø¶ï¿½ï¿½ï¿½Æ¬ï¿½ÎµÄ³ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Î»)
             }
         }
         return 0f;
