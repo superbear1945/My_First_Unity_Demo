@@ -1,8 +1,9 @@
+// using System; å¼•å…¥äº† .NET çš„æ ¸å¿ƒå‘½åç©ºé—´ã€‚
+// å®ƒåŒ…å«äº†åŸºç¡€æ•°æ®ç±»å‹ (å¦‚ int, string, bool), äº‹ä»¶ (Action, EventHandler), å¼‚å¸¸å¤„ç† (Exception),
+// ä»¥åŠå…¶ä»–è®¸å¤šç¼–ç¨‹å¿…éœ€çš„åŸºç¡€ç±»å’Œæ¥å£ã€‚
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 public class Enemy : MonoBehaviour
 {
@@ -14,8 +15,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] AudioSource _dieAS;
     protected GameObject _playerGameObject; // Renamed for clarity
     protected Rigidbody2D _rb2d;
-    float _visionRange = 10f; //ÊÓÒ°·¶Î§
-    public float _moveSpeed = 10f; //ÒÆ¶¯ËÙ¶È
+    float _visionRange = 10f; //ï¿½ï¿½Ò°ï¿½ï¿½Î§
+    public float _moveSpeed = 10f; //ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
     protected SpriteRenderer _spriteRenderer;
 
     void Start()
@@ -42,7 +43,7 @@ public class Enemy : MonoBehaviour
         
     }
 
-    public void Hurt(GameObject resource)//²¥·ÅÉËº¦ÒôĞ§²¢´¥·¢ÊÜÉË¶¯»­
+    public void Hurt(GameObject resource)//ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½ï¿½ï¿½Ğ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ï¿½
     {
         if (resource.TryGetComponent<Bullet>(out Bullet bullet))
             _rangeHitAS.Play();
@@ -53,7 +54,7 @@ public class Enemy : MonoBehaviour
 
     public void Die(Health healthInstance)
     {
-        if (healthInstance != _health) return; // ½öµ±ÊÇ×ÔÉíµÄ Health ×é¼ş´¥·¢Ê±²ÅÏìÓ¦
+        if (healthInstance != _health) return; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Health ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ó¦
         _collider2D.enabled = false;
         _dieAS.Play();
         _animator.SetBool("isDead", true);
@@ -74,12 +75,12 @@ public class Enemy : MonoBehaviour
 
     protected virtual void MoveTowardsPlayer(float speed, bool isHurt, GameObject playerGameObject, float range, Animator animator)
     {
-        if (_health._isDead)// Èç¹ûµĞÈËÒÑ¾­ËÀÍö£¬Ôò²»Ö´ĞĞÒÆ¶¯Âß¼­£¬²¢ÇÒËÙ¶È¹éÁã
+        if (_health._isDead)// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È¹ï¿½ï¿½ï¿½
         {
             _rb2d.velocity = Vector2.zero;
             return;
         }
-        if (isHurt) return; // Èç¹ûµĞÈËÊÜÉË£¬Ôò²»Ö´ĞĞÒÆ¶¯Âß¼­
+        if (isHurt) return; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ß¼ï¿½
         if (playerGameObject != null && Vector2.Distance(transform.position, playerGameObject.transform.position) <= range)
         {
             Vector2 direction = (playerGameObject.transform.position - transform.position).normalized;

@@ -162,32 +162,37 @@ public class Player : MonoBehaviour
 
     private void Move(Rigidbody2D rb2d, float speed)
     {
-        Vector2 direction = _move.ReadValue<Vector2>();
-        if (IsSolidEnemy(direction, _enemyLayer))
+        Vector2 direction = _move.ReadValue<Vector2>().normalized; // 标准化以获得纯方向
+        Vector2 targetVelocity = direction * speed;
+
+        // 分别检测 X 和 Y 轴的墙壁碰撞
+        RaycastHit2D hitX = Physics2D.Raycast(_rb2d.position, new Vector2(direction.x, 0), _raycastDistance, _wallLayer);
+        if (hitX.collider != null)
         {
-            rb2d.velocity = direction * speed * 0.3f;
+            targetVelocity.x = 0; // 如果 X 轴有墙，则 X 轴速度为0
         }
-        else if (IsSolidEnemy(direction, _wallLayer))//撞到墙停下
+
+        RaycastHit2D hitY = Physics2D.Raycast(_rb2d.position, new Vector2(0, direction.y), _raycastDistance, _wallLayer);
+        if (hitY.collider != null)
         {
-            RaycastHit2D hit = Physics2D.Raycast(
-            _rb2d.position,
-            direction,
-            _raycastDistance,
-            _wallLayer);
-            Vector2 wallNormal = hit.normal; // 获取墙壁的法线
-            Vector2 projectedDirection = Vector2.Perpendicular(wallNormal); // 计算与墙壁平行的方向
-            if (wallNormal.x == 0) rb2d.velocity = new Vector2(direction.x, 0) * speed;
-            else rb2d.velocity = new Vector2(0, direction.y) * speed;
+            targetVelocity.y = 0; // 如果 Y 轴有墙，则 Y 轴速度为0
+        }
+
+        // 如果没有撞到墙，再检测敌人
+        if (hitX.collider == null && hitY.collider == null && IsSolidObject(direction, _enemyLayer))
+        {
+            rb2d.velocity = targetVelocity * 0.3f;
         }
         else
         {
-            rb2d.velocity = direction * speed;
+            rb2d.velocity = targetVelocity;
         }
+
         _isMove = (rb2d.velocity != Vector2.zero);
         _atr.SetBool("isMove", _isMove);
     }
 
-    bool IsSolidEnemy(Vector2 direction, LayerMask layer)
+    bool IsSolidObject(Vector2 direction, LayerMask layer)
     {
         RaycastHit2D hit = Physics2D.Raycast(
             _rb2d.position,                   // 射线起点
