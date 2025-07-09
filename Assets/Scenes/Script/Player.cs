@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     InputAction _mouseLeft;
     InputAction _interact;
     InputAction _changeWeapon;
+    public InputAction _pause;
+    
     [SerializeField] Rigidbody2D _rb2d;
     SpriteRenderer _sr;
     public float _walkSpeed = 10;
@@ -56,6 +58,7 @@ public class Player : MonoBehaviour
         _mouseLeft = InputSystem.actions.FindAction("Attack");
         _interact = InputSystem.actions.FindAction("Interact");
         _changeWeapon = InputSystem.actions.FindAction("ChangeWeapon");
+        _pause = InputSystem.actions.FindAction("Pause");
         _sr = GetComponent<SpriteRenderer>();
         _atr = GetComponent<Animator>();
         _weaponParent = GetComponentInChildren<WeaponParent>();
@@ -77,6 +80,11 @@ public class Player : MonoBehaviour
         Health.OnDie += PlayerDie;
 
         WeaponParent.OnWeaponSpawned += (weapon) => _weapon = weapon;//防止游戏刚开始时角色获取不到武器
+    }
+
+    private void Pause()
+    {
+        
     }
 
     private void Shopping(InputAction.CallbackContext context)

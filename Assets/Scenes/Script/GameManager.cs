@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; // 必须引用场景管理命名空间
-
+using UnityEngine.SceneManagement; 
 public class GameManager : MonoBehaviour
 {
     public static GameManager _instance { get; private set; }
 
     public GameObject playerPrefab;
+    public GameObject _pauseCanvas;
 
     private void Awake()
     {
@@ -20,5 +20,22 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void BackToShop()
+    {
+        SceneManager.LoadScene("Shop");
+        _pauseCanvas.SetActive(false);
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0;
+        _pauseCanvas.SetActive(true);
     }
 }
