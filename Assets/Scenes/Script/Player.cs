@@ -86,11 +86,11 @@ public class Player : MonoBehaviour
     private void Pause(InputAction.CallbackContext context)
     {
         if (_health._isDead) return;
-        if (GameManager._instance._isPause)
+        if (GameManager._instance._isPause && !_health._isDead)
         {
             GameManager._instance.PauseBack();
         }
-        else
+        else if(!_health._isDead)
         {
             GameManager._instance.Pause();
         }

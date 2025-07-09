@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     {
         _dieCanvas.SetActive(true);
         Time.timeScale = 0;
+        _isPause = true;
     }
 
     private void Awake()
