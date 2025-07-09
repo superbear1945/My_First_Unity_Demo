@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject _pauseCanvas;
     public GameObject _dieCanvas;
     public bool _isPause { get; private set; } = false; // 用于跟踪暂停状态
+    public AudioSource _deadAudio;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
         _dieCanvas.SetActive(true);
         Time.timeScale = 0;
         _isPause = true;
+        _deadAudio.Play();
     }
 
     private void Awake()
