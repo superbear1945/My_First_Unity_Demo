@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     InputAction _mouseLeft;
     InputAction _interact;
     InputAction _changeWeapon;
-    public InputAction _pause;
+    InputAction _pause;
     
     [SerializeField] Rigidbody2D _rb2d;
     SpriteRenderer _sr;
@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int _hurtFlashCount = 3; // 可调整的受伤闪烁次数
     [SerializeField] private float _raycastDistance = 0.1f; // 射线检测的距离
     public event Action<GameObject> OnShoppingEvent; // 购物事件 (改为实例事件)
+    [SerializeField] GameObject _deadPlayer;
 
     void Awake()
     {
@@ -84,6 +85,7 @@ public class Player : MonoBehaviour
 
     private void Pause(InputAction.CallbackContext context)
     {
+        if (_health._isDead) return;
         if (GameManager._instance._isPause)
         {
             GameManager._instance.PauseBack();
@@ -301,12 +303,13 @@ public class Player : MonoBehaviour
     {
         if (healthInstance != _health) return; // 仅当是自身的 Health 组件触发时才响应
         Debug.Log("Player has died.");
-        // 可以在这里添加玩家死亡的动画或音效逻辑
-        //_atr.SetBool("isDead", true);
-        // 停止玩家的移动
-        //_rb2d.velocity = Vector2.zero;
-        // 其他死亡处理逻辑，例如重置场景或显示游戏结束界面
-        SceneManager.LoadScene("Shop");
+        GameManager._instance.PlayerDie(); // 调用 GameManager 的 PlayerDie 方法
+        Instantiate(_deadPlayer, transform.position, Quaternion.identity); // 实例化死亡角色
+        SpriteRenderer [] temps = GetComponentsInChildren<SpriteRenderer>();
+        foreach (var temp in temps)
+        {
+            temp.enabled = false; // 禁用所有子物体的 SpriteRenderer
+        }
     }
 
     void OnTriggerStay2D(Collider2D collision)

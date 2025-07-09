@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyCount: 5
-  _minRadius: 5
+  _minRadius: 6
   _maxRadius: 10
   _enemyPrefab: {fileID: 8651471326221459700, guid: 5da48193dc3db424b976891e14d176f5, type: 3}
   _wallLayer:

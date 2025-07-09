@@ -218,15 +218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc3ae70382eb51e45a2437e955c891f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pause:
-    m_Name: Pause
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: e2b3319d-7824-4783-a969-1315ff2491e9
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
   _rb2d: {fileID: 9204857913950697961}
   _walkSpeed: 5
   _isMove: 0
@@ -239,6 +230,7 @@ MonoBehaviour:
   _hurtFlashTotalDuration: 1
   _hurtFlashCount: 3
   _raycastDistance: 0.6
+  _deadPlayer: {fileID: 6960665143990041839, guid: bcccaf51bd5bf424f95c7d38cfbe8aa2, type: 3}
 --- !u!114 &4438684506621486091
 MonoBehaviour:
   m_ObjectHideFlags: 0
