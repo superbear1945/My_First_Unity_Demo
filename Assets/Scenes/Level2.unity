@@ -6821,13 +6821,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 030b9e154d8f7f0448a54e1b21bc8d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyCount: 40
+  _enemyCount: 20
   _minRadius: 8
   _maxRadius: 15
   _enemyPrefab: {fileID: 8651471326221459700, guid: d0c832c917d04cb4d9e2358efd04ee5e, type: 3}
   _wallLayer:
     serializedVersion: 2
     m_Bits: 256
+  _spawnDelay: 5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

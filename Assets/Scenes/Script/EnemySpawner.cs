@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,14 +13,29 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] LayerMask _wallLayer; // Layer for walls to avoid spawning behind them
 
+    [SerializeField] float _spawnDelay = 0.5f; // Delay between enemy spawns, if needed
+
     private Transform _playerTransform;
+
+    void Update()
+    {
+        if (_spawnDelay > 0f)
+        {
+            _spawnDelay -= Time.deltaTime;
+        }
+        else
+        {
+            SpawnEnemies(1);
+            Debug.Log("Spawned an enemy");
+            _spawnDelay = 0.5f; // Reset delay to prevent repeated calls
+        }
+    }
 
     void Awake()
     {
         // Ensure subscription happens only once
         // Health.OnDie -= StepToLevel3; // Remove previous subscriptions if any (safety measure)
         // Health.OnDie += StepToLevel3;
-        Health.OnDie += OnEnemyDie; // Subscribe to the static event for enemy death
     }
 
     void Start()
@@ -114,9 +130,5 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    void OnDestroy() // It's good practice to unsubscribe from static events when the listener is destroyed
-    {
-        // Health.OnDie -= StepToLevel3;
-        Health.OnDie -= OnEnemyDie; 
-    }
+    
 }
