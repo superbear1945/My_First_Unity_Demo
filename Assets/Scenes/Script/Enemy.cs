@@ -1,6 +1,3 @@
-// using System; 引入了 .NET 的核心命名空间。
-// 它包含了基础数据类型 (如 int, string, bool), 事件 (Action, EventHandler), 异常处理 (Exception),
-// 以及其他许多编程必需的基础类和接口。
 using System;
 using System.Collections;
 using UnityEngine;
