@@ -25,10 +25,13 @@ public class Level2Manager : MonoBehaviour
 
     void Update()
     {
+        if (GameManager._instance._isGameEnd) return;
         _time -= Time.deltaTime;
         if (_time <= 0)
         {
-            SceneManager.LoadScene("Level3");
+            GameManager._instance.GameEnd();
+            
         }
+        Debug.Log(GameManager._instance._isGameEnd);
     }
 }

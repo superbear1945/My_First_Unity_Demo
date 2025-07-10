@@ -10,8 +10,11 @@ public class GameManager : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject _pauseCanvas;
     public GameObject _dieCanvas;
+    public GameObject _endCanvas;
     public bool _isPause { get; private set; } = false; // 用于跟踪暂停状态
     public AudioSource _deadAudio;
+    public AudioSource _endAudio;
+    public bool _isGameEnd = false;
 
     void Start()
     {
@@ -47,10 +50,10 @@ public class GameManager : MonoBehaviour
     public void BackToShop()
     {
         // 启用所有子物体的 SpriteRenderer
-        SpriteRenderer [] temps = playerPrefab.GetComponentsInChildren<SpriteRenderer>();
+        SpriteRenderer[] temps = playerPrefab.GetComponentsInChildren<SpriteRenderer>();
         foreach (var temp in temps)
         {
-            temp.enabled = true; 
+            temp.enabled = true;
         }
 
         playerPrefab.SetActive(true); // 确保玩家对象在返回商店时处于激活状态
@@ -73,5 +76,13 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         _pauseCanvas.SetActive(false);
         _isPause = false;
+    }
+
+    public void GameEnd()
+    {
+        _endCanvas.SetActive(true);
+        Time.timeScale = 0;
+        _endAudio.Play();
+        _isGameEnd = true;
     }
 }
