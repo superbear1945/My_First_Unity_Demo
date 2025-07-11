@@ -34,8 +34,8 @@ public class Health : MonoBehaviour
     {
         InitialHealth();
         _enemy = GetComponent<Enemy>();
-        _hpCounter = GameObject.FindGameObjectWithTag("HpShop");
-        if(_hpCounter != null) _hpCounter.GetComponent<Counter>().OnShoppingEvent += AddMaxHealth;
+        // _hpCounter = GameObject.FindGameObjectWithTag("HpShop");
+        // if(_hpCounter != null) _hpCounter.GetComponent<Counter>().OnShoppingEvent += AddMaxHealth;
     }
 
     void OnEnable()
@@ -57,12 +57,13 @@ public class Health : MonoBehaviour
         // Check if this Health component belongs to the Player and the scene is "Shop"
         if (Player.Instance != null && gameObject == Player.Instance.gameObject)
         {
-            if (scene.name == "Shop")
+            if (scene.name == "Shop") //回到了Shop关卡
             {
-                InitialHealth(); // Resets _currentHealth to _maxHealth
-                _isDead = false;    // Ensure player is not marked as dead
+                InitialHealth();   // Resets _currentHealth to _maxHealth
+                _isDead = false;   // Ensure player is not marked as dead
                 _isHurt = false;   // Reset hurt state as well
-                Debug.Log("Player health and status reset upon entering Shop.");
+                _hpCounter = GameObject.FindGameObjectWithTag("HpShop");
+                if(_hpCounter != null) _hpCounter.GetComponent<Counter>().OnShoppingEvent += AddMaxHealth;
             }
         }
     }
