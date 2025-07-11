@@ -7127,7 +7127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e225779f7d632dd458cd467cc06ef593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinValue: 200
+  coinValue: 0
   coinText: {fileID: 1876444547}
   _healthScrollbar: {fileID: 318102276}
   _maxHealthText: {fileID: 1529249399}
