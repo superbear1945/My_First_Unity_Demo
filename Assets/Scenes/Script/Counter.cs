@@ -6,23 +6,24 @@ public class Counter : MonoBehaviour
 {
     [SerializeField] int _price = 10;
 
-    public enum CounterType // Ã¶¾Ù¶¨Òå£¬ÉèÎª public ÒÔ±ã Inspector ·ÃÎÊ
+    public enum CounterType // æšä¸¾å®šä¹‰ï¼Œè®¾ä¸º public ä»¥ä¾¿ Inspector è®¿é—®
     {
         Melee1 = 3,
         SingleGun = 0,
         AutoGun = 1,
         HP = 2
     }
-    [SerializeField] public CounterType _counterType; // ÉùÃ÷ CounterType ÀàĞÍµÄ×Ö¶Î²¢ĞòÁĞ»¯
+    [SerializeField] public CounterType _counterType; // å£°æ˜ CounterType ç±»å‹çš„å­—æ®µå¹¶åºåˆ—åŒ–
     [SerializeField]static int _purchaseHPCount = 0;
+    public event System.Action OnShoppingEvent;
 
     void Start()
     {
-        // ¼ì²é´ËÕ¹Ì¨ÊÇ·ñÒÑ±»¹ºÂò
+        // æ£€æŸ¥æ­¤å±•å°æ˜¯å¦å·²è¢«è´­ä¹°
         if (CounterStatusManager.IsPurchased(_counterType))
         {
-            gameObject.SetActive(false); // Èç¹ûÒÑ¹ºÂò£¬Ôò½ûÓÃ´ËÕ¹Ì¨
-            return; // ÎŞĞèÔÙÖ´ĞĞºóĞøÂß¼­
+            gameObject.SetActive(false); // å¦‚æœå·²è´­ä¹°ï¼Œåˆ™ç¦ç”¨æ­¤å±•å°
+            return; // æ— éœ€å†æ‰§è¡Œåç»­é€»è¾‘
         }
 
         if (Player.Instance != null)
@@ -47,24 +48,25 @@ public class Counter : MonoBehaviour
     {
 
         if (shop != gameObject) return;
-        // ÔÚÕâÀïÌí¼Ó¹ºÎïÂß¼­
+        // åœ¨è¿™é‡Œæ·»åŠ è´­ç‰©é€»è¾‘
         if (UIManager._instance._coin < _price)
         {
-            Debug.Log("½ğ±Ò²»×ã£¬ÎŞ·¨¹ºÂò¡£");
+            Debug.Log("é‡‘å¸ä¸è¶³ï¼Œæ— æ³•è´­ä¹°ã€‚");
             return;
         }
-        Debug.Log($"ÓëÉÌµê {shop.name} ½øĞĞ¹ºÎï¡£");
+        Debug.Log($"ä¸å•†åº— {shop.name} è¿›è¡Œè´­ç‰©ã€‚");
         UIManager._instance._coin -= _price;
         if (!gameObject.CompareTag("HpShop"))
         {
-            // ÔÚÏú»ÙÖ®Ç°±ê¼ÇÎªÒÑ¹ºÂò
+            // åœ¨é”€æ¯ä¹‹å‰æ ‡è®°ä¸ºå·²è´­ä¹°
             CounterStatusManager.MarkAsPurchased(_counterType);
             Destroy(gameObject);
         }
         else
         {
             _purchaseHPCount++;
-            if (_purchaseHPCount >= 9) //¹ºÂò9¸öHPºó£¬Ïú»ÙHPÉÌµê
+            OnShoppingEvent?.Invoke(); // è§¦å‘åŠ è¡€äº‹ä»¶ï¼Œè®©Health.csåŠ è¡€
+            if (_purchaseHPCount >= 9) //è´­ä¹°9ä¸ªHPåï¼Œé”€æ¯HPå•†åº—
             {
                 CounterStatusManager.MarkAsPurchased(_counterType);
                 Destroy(gameObject);

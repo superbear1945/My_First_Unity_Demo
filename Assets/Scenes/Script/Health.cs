@@ -14,34 +14,28 @@ public class Health : MonoBehaviour
     public bool _isHurt { get; private set; }
     Enemy _enemy;
     PopUpText _popUpTextPrefab;
+    GameObject _hpCounter;
 
     void Awake()
     {
         _popUpTextPrefab = Resources.Load<PopUpText>("PopUpText");
     }
 
-    void AddMaxHealth(GameObject counter)
+    void AddMaxHealth()
     {
-        if (counter.GetComponent<Counter>()._counterType == Counter.CounterType.HP)
-        {
-            _maxHealth++;
-            _currentHealth = _maxHealth;
-        }
+        Debug.Log(gameObject.CompareTag("Player"));
+        if (gameObject.CompareTag("Player") == false) return; //不是玩家不加生命值
+        _maxHealth++;
+        _currentHealth = _maxHealth;
+        Debug.Log("Hp++");
     }
 
     private void Start()
     {
         InitialHealth();
         _enemy = GetComponent<Enemy>();
-
-        if (Player.Instance != null)
-        {
-            Player.Instance.OnShoppingEvent += AddMaxHealth; // ���� Player �Ĺ����¼�
-        }
-        else
-        {
-            Debug.LogError("Player instance not found for Health event subscription.");
-        }
+        _hpCounter = GameObject.FindGameObjectWithTag("HpShop");
+        if(_hpCounter != null) _hpCounter.GetComponent<Counter>().OnShoppingEvent += AddMaxHealth;
     }
 
     void OnEnable()
@@ -54,11 +48,8 @@ public class Health : MonoBehaviour
 
     void OnDisable()
     {
-        if (Player.Instance != null)
-        {
-            Player.Instance.OnShoppingEvent -= AddMaxHealth;
-        }
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        if(_hpCounter != null) _hpCounter.GetComponent<Counter>().OnShoppingEvent -= AddMaxHealth;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
